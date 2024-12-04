@@ -110,7 +110,7 @@ two_gram =
   count(word1, word2, sort = TRUE)
 two_gram
 
-scopus_spacy = spacy_parse(scopus$title)
+scopus_spacy = spacy_parse(scopus$title) |> as_tibble()
 
 one_gram_spacy = scopus_spacy |>
   filter(pos != "PUNCT") |>
@@ -210,7 +210,7 @@ two_gram_old = scopus_old |>
   count(word1, word2, sort = TRUE)
 two_gram_old
 
-scopus_old_spacy = spacy_parse(scopus_old$title)
+scopus_old_spacy = spacy_parse(scopus_old$title) |> as_tibble()
 
 one_gram_old_spacy = scopus_old_spacy |>
   filter(pos != "PUNCT") |>
