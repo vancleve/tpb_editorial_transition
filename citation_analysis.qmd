@@ -4,6 +4,7 @@ author: "Jeremy Van Cleve"
 format: 
   html:
     self-contained: true
+    df-print: paged
 ---
 
 # Check Scopus data against OpenAlex and World of Science
@@ -13,6 +14,12 @@ format:
 ```{r}
 library(RefManageR)
 library(tidyverse)
+library(tidytext)
+library(spacyr)
+library(gt)
+
+data(stop_words)
+spacy_initialize()
 
 scopus = ReadBib("tpb_2013-2024_scopus.bib", check = "warn") |> as.data.frame() |> as_tibble()
 openalex = ReadBib("tpb_2013-2024_openalex-2024-12-03T01-35-58.bib", check = "warn") |> as.data.frame() |> as_tibble()
@@ -84,12 +91,7 @@ scopus |>
 Use `spacyr` and `tidytext` to create word tokens the title and create bigrams from the titles. Use `spacyr` to lemmatize the words to see how that changes the results.
 
 ```{r}
-library(tidytext)
-library(spacyr)
-library(gt)
-
-data(stop_words)
-spacy_initialize()
+scopus_spacy = spacy_parse(scopus$title) |> as_tibble()
 
 one_gram = 
   scopus |>
@@ -99,7 +101,15 @@ one_gram =
   #mutate(word = wordStem(word)) |>
   #mutate(word = hunspell_stem(word)) |>  unnest(word) |>
   count(word, sort = TRUE)
-one_gram
+one_gram |> head(n = 40)
+
+one_gram_spacy = scopus_spacy |>
+  filter(pos != "PUNCT") |>
+  filter(lemma != "-", lemma != "'s") |>
+  anti_join(stop_words, by = join_by(lemma == word)) |>
+  rename(word = lemma) |>
+  count(word, sort = TRUE)
+one_gram_spacy |> head(n = 40)
 
 two_gram = 
   scopus |>
@@ -108,17 +118,7 @@ two_gram =
   separate_wider_delim(two_gram, delim = " ", names = c("word1", "word2")) |> 
   filter(!word1 %in% stop_words$word, !word2 %in% stop_words$word) |>
   count(word1, word2, sort = TRUE)
-two_gram
-
-scopus_spacy = spacy_parse(scopus$title) |> as_tibble()
-
-one_gram_spacy = scopus_spacy |>
-  filter(pos != "PUNCT") |>
-  filter(lemma != "-", lemma != "'s") |>
-  anti_join(stop_words, by = join_by(lemma == word)) |>
-  rename(word = lemma) |>
-  count(word, sort = TRUE)
-one_gram_spacy
+two_gram |> head(n = 40)
 
 two_gram_spacy = 
   scopus_spacy |>
@@ -129,7 +129,7 @@ two_gram_spacy =
   separate_wider_delim(two_gram, delim = " ", names = c("word1", "word2")) |> 
   filter(!word1 %in% stop_words$word, !word2 %in% stop_words$word) |>
   count(word1, word2, sort = TRUE)
-two_gram_spacy
+two_gram_spacy |> head(n = 40)
 ```
 The results look cleaner with the lemmatized data so we will use that going forward.
 
@@ -139,10 +139,10 @@ Create a printable table with `gt`.
 cbind(
   one_gram_spacy |>
   rename(n1 = n) |>
-  head(n = 20),
+  head(n = 40),
   two_gram_spacy |>
   rename(n2 = n) |>
-  head(n = 20)) |> 
+  head(n = 40)) |> 
   as_tibble() |>
   unite("Word pair", word1:word2, sep = " ") |>
   mutate(Rank = row_number()) |>
@@ -152,7 +152,6 @@ cbind(
   cols_label(n1 = "Number of publications", n2 = "Number of publications") |>
   tab_spanner(label = "Single words", columns = c(Word, n1)) |>
   tab_spanner(label = "Pair of words", columns = c("Word pair", n2)) #|> as_latex() |> as.character() |> cat()
-
 ```
 
 Out of curiosity, how many titles have something to do with COVID-19?
@@ -195,22 +194,14 @@ scopus_old |>
 Create word tokens from titles and lemmatize.
 
 ```{r}
+scopus_old_spacy = spacy_parse(scopus_old$title) |> as_tibble()
+
 one_gram_old = scopus_old |>
   #mutate(title = str_replace_all(title, "[-–]", "_")) |>
   unnest_tokens(word, title) |>
   anti_join(stop_words) |> 
   count(word, sort = TRUE)
-one_gram_old
-
-two_gram_old = scopus_old |>
-  #mutate(title = str_replace_all(title, "[-–]", "_")) |>
-  unnest_tokens(bigram, title, token = "ngrams", n = 2) |>
-  separate_wider_delim(bigram, delim = " ", names = c("word1", "word2")) |> 
-  filter(!word1 %in% stop_words$word, !word2 %in% stop_words$word) |>
-  count(word1, word2, sort = TRUE)
-two_gram_old
-
-scopus_old_spacy = spacy_parse(scopus_old$title) |> as_tibble()
+one_gram_old |> head(n = 40)
 
 one_gram_old_spacy = scopus_old_spacy |>
   filter(pos != "PUNCT") |>
@@ -218,7 +209,15 @@ one_gram_old_spacy = scopus_old_spacy |>
   anti_join(stop_words, by = join_by(lemma == word)) |>
   rename(word = lemma) |>
   count(word, sort = TRUE)
-one_gram_old_spacy
+one_gram_old_spacy |> head(n = 40)
+
+two_gram_old = scopus_old |>
+  #mutate(title = str_replace_all(title, "[-–]", "_")) |>
+  unnest_tokens(bigram, title, token = "ngrams", n = 2) |>
+  separate_wider_delim(bigram, delim = " ", names = c("word1", "word2")) |> 
+  filter(!word1 %in% stop_words$word, !word2 %in% stop_words$word) |>
+  count(word1, word2, sort = TRUE)
+two_gram_old |> head(n = 40)
 
 two_gram_old_spacy = 
   scopus_old_spacy |>
@@ -229,7 +228,7 @@ two_gram_old_spacy =
   separate_wider_delim(two_gram, delim = " ", names = c("word1", "word2")) |> 
   filter(!word1 %in% stop_words$word, !word2 %in% stop_words$word) |>
   count(word1, word2, sort = TRUE)
-two_gram_old_spacy
+two_gram_old_spacy |> head(n = 40)
 ```
 
 As with the 2013—2024 data, these results look better with the lemmatized words.
