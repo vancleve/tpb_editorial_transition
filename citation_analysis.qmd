@@ -145,13 +145,14 @@ cbind(
   head(n = 40)) |> 
   as_tibble() |>
   unite("Word pair", word1:word2, sep = " ") |>
-  mutate(Rank = row_number()) |>
-  select(Rank, word, n1, "Word pair", n2) |>
+  mutate(Rank1 = rank(-n1, ties.method = "min")) |>
+  mutate(Rank2 = rank(-n2, ties.method = "min")) |>
+  select(word, Rank1, n1, "Word pair", Rank2, n2) |>
   rename(Word = word) |>
   gt() |>
   cols_label(n1 = "Number of publications", n2 = "Number of publications") |>
-  tab_spanner(label = "Single words", columns = c(Word, n1)) |>
-  tab_spanner(label = "Pair of words", columns = c("Word pair", n2)) #|> as_latex() |> as.character() |> cat()
+  tab_spanner(label = "Single words", columns = c(Word, Rank1, n1)) |>
+  tab_spanner(label = "Pair of words", columns = c("Word pair", Rank2, n2)) #|> as_latex() |> as.character() |> cat()
 ```
 
 Out of curiosity, how many titles have something to do with COVID-19?
@@ -245,13 +246,14 @@ cbind(
   head(n = 40)) |> 
   as_tibble() |>
   unite("Word pair", word1:word2, sep = " ") |>
-  mutate(Rank = row_number()) |>
-  select(Rank, word, n1, "Word pair", n2) |>
+  mutate(Rank1 = rank(-n1, ties.method = "min")) |>
+  mutate(Rank2 = rank(-n2, ties.method = "min")) |>
+  select(word, Rank1, n1, "Word pair", Rank2, n2) |>
   rename(Word = word) |>
   gt() |>
   cols_label(n1 = "Number of publications", n2 = "Number of publications") |>
-  tab_spanner(label = "Single words", columns = c(Word, n1)) |>
-  tab_spanner(label = "Pair of words", columns = c("Word pair", n2)) #|> as_latex() |> as.character() |> cat()
+  tab_spanner(label = "Single words", columns = c(Word, Rank1, n1)) |>
+  tab_spanner(label = "Pair of words", columns = c("Word pair", Rank2, n2)) #|> as_latex() |> as.character() |> cat()
 ```
 
 # Combined tables for 2013—2024 and 1970—2012
@@ -261,17 +263,17 @@ cbind(
 ```{r}
 cbind(
   one_gram_spacy |>
-    left_join(one_gram_old_spacy |> mutate(Rank_old1 = row_number()), 
+    left_join(one_gram_old_spacy |> mutate(Rank_old1 = rank(-n, ties.method = "min")), 
               by = join_by(word), suffix = c("_new1", "_old1")) |>
     head(n = 20),
   
   two_gram_spacy |>
     unite("Word pair", word1:word2, sep = " ") |>
-    left_join(two_gram_old_spacy |> mutate(Rank_old2 = row_number()) |> unite("Word pair", word1:word2, sep = " "), 
+    left_join(two_gram_old_spacy |> mutate(Rank_old2 = rank(-n, ties.method = "min")) |> unite("Word pair", word1:word2, sep = " "), 
               by = join_by("Word pair"), suffix = c("_new2", "_old2")) |>
     head(n = 20)) |>
   as_tibble() |>
-  mutate(Rank_new1 = row_number(), Rank_new2 = row_number()) |>
+  mutate(Rank_new1 = rank(-n_new1, ties.method = "min"), Rank_new2 = rank(-n_new2, ties.method = "min")) |>
   #select(word, n_new1, n_old1, Rank_new1, Rank_old1, "Word pair", n_new2, n_old2, Rank_new2, Rank_old2) |>
   select(word, n_new1, Rank_new1, Rank_old1, "Word pair", n_new2, Rank_new2, Rank_old2) |>
   gt() |>
@@ -293,14 +295,16 @@ cbind(
 
 ## Two tables
 
+Create printable table where I checked that `head(n = 20)` includes top 20 ranks.
+
 ```{r}
 one_gram_spacy |>
-  left_join(one_gram_old_spacy |> mutate(Rank_old1 = row_number()), 
+  left_join(one_gram_old_spacy |> mutate(Rank_old1 = rank(-n, ties.method = "min")), 
             by = join_by(word), suffix = c("_new1", "_old1")) |>
-  head(n = 20) |>
   as_tibble() |>
-  mutate(Rank_new1 = row_number()) |>
+  mutate(Rank_new1 = rank(-n_new1, ties.method = "min")) |>
   select(word, n_new1, Rank_new1, Rank_old1) |>
+  head(n = 20) |>
   gt() |>
   sub_missing(columns = c(Rank_old1), missing_text = "-") |>
   cols_label(word = "Word",
@@ -308,15 +312,17 @@ one_gram_spacy |>
   tab_spanner(label = "# of pubs", columns = c(n_new1), id = "one_pubs_span") |>
   tab_spanner(label = "Rank", columns = c(Rank_new1, Rank_old1), id = "one_rank_span") |>
   tab_spanner(label = "Single words", spanners = c("one_pubs_span", "one_rank_span")) #|> as_latex() |> as.character() |> cat()
+```
 
+```{r}
 two_gram_spacy |>
   unite("Word pair", word1:word2, sep = " ") |>
-  left_join(two_gram_old_spacy |> mutate(Rank_old2 = row_number()) |> unite("Word pair", word1:word2, sep = " "), 
+  left_join(two_gram_old_spacy |> mutate(Rank_old2 = rank(-n, ties.method = "min")) |> unite("Word pair", word1:word2, sep = " "), 
             by = join_by("Word pair"), suffix = c("_new2", "_old2")) |>
-  head(n = 20) |>
   as_tibble() |>
-  mutate(Rank_new2 = row_number()) |>
+  mutate(Rank_new2 = rank(-n_new2, ties.method = "min")) |>
   select("Word pair", n_new2, Rank_new2, Rank_old2) |>
+  head(n = 20) |>
   gt() |>
   sub_missing(columns = c(Rank_old2), missing_text = "-") |>
   cols_label(n_new2 = "2013—2024", Rank_new2 = "2013—2024", Rank_old2 = "1970—2012") |>
@@ -324,3 +330,4 @@ two_gram_spacy |>
   tab_spanner(label = "Rank", columns = c(Rank_new2, Rank_old2), id = "two_rank_span") |>
   tab_spanner(label = "Pair of words", spanners = c("two_pubs_span", "two_rank_span")) #|> as_latex() |> as.character() |> cat()
 ```
+

@@ -4610,28 +4610,29 @@ window.onload = function() {
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">40</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
 <span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(<span class="st">&quot;Word pair&quot;</span>, word1<span class="sc">:</span>word2, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rank =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Rank, word, n1, <span class="st">&quot;Word pair&quot;</span>, n2) <span class="sc">|&gt;</span></span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Word =</span> word) <span class="sc">|&gt;</span></span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">n1 =</span> <span class="st">&quot;Number of publications&quot;</span>, <span class="at">n2 =</span> <span class="st">&quot;Number of publications&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Single words&quot;</span>, <span class="at">columns =</span> <span class="fu">c</span>(Word, n1)) <span class="sc">|&gt;</span></span>
-<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Pair of words&quot;</span>, <span class="at">columns =</span> <span class="fu">c</span>(<span class="st">&quot;Word pair&quot;</span>, n2)) <span class="co">#|&gt; as_latex() |&gt; as.character() |&gt; cat()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rank1 =</span> <span class="fu">rank</span>(<span class="sc">-</span>n1, <span class="at">ties.method =</span> <span class="st">&quot;min&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rank2 =</span> <span class="fu">rank</span>(<span class="sc">-</span>n2, <span class="at">ties.method =</span> <span class="st">&quot;min&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(word, Rank1, n1, <span class="st">&quot;Word pair&quot;</span>, Rank2, n2) <span class="sc">|&gt;</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Word =</span> word) <span class="sc">|&gt;</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">n1 =</span> <span class="st">&quot;Number of publications&quot;</span>, <span class="at">n2 =</span> <span class="st">&quot;Number of publications&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Single words&quot;</span>, <span class="at">columns =</span> <span class="fu">c</span>(Word, Rank1, n1)) <span class="sc">|&gt;</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Pair of words&quot;</span>, <span class="at">columns =</span> <span class="fu">c</span>(<span class="st">&quot;Word pair&quot;</span>, Rank2, n2)) <span class="co">#|&gt; as_latex() |&gt; as.character() |&gt; cat()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="iarvpppxde" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#iarvpppxde table {
+<div id="bcbtsitmnu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#bcbtsitmnu table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#iarvpppxde thead, #iarvpppxde tbody, #iarvpppxde tfoot, #iarvpppxde tr, #iarvpppxde td, #iarvpppxde th {
+#bcbtsitmnu thead, #bcbtsitmnu tbody, #bcbtsitmnu tfoot, #bcbtsitmnu tr, #bcbtsitmnu td, #bcbtsitmnu th {
 border-style: none;
 }
-#iarvpppxde p {
+#bcbtsitmnu p {
 margin: 0;
 padding: 0;
 }
-#iarvpppxde .gt_table {
+#bcbtsitmnu .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -4656,11 +4657,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#iarvpppxde .gt_caption {
+#bcbtsitmnu .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#iarvpppxde .gt_title {
+#bcbtsitmnu .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -4671,7 +4672,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#iarvpppxde .gt_subtitle {
+#bcbtsitmnu .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -4682,7 +4683,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#iarvpppxde .gt_heading {
+#bcbtsitmnu .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -4693,12 +4694,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#iarvpppxde .gt_bottom_border {
+#bcbtsitmnu .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#iarvpppxde .gt_col_headings {
+#bcbtsitmnu .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -4712,7 +4713,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#iarvpppxde .gt_col_heading {
+#bcbtsitmnu .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4731,7 +4732,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#iarvpppxde .gt_column_spanner_outer {
+#bcbtsitmnu .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4742,13 +4743,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#iarvpppxde .gt_column_spanner_outer:first-child {
+#bcbtsitmnu .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#iarvpppxde .gt_column_spanner_outer:last-child {
+#bcbtsitmnu .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#iarvpppxde .gt_column_spanner {
+#bcbtsitmnu .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -4759,10 +4760,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#iarvpppxde .gt_spanner_row {
+#bcbtsitmnu .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#iarvpppxde .gt_group_heading {
+#bcbtsitmnu .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4787,7 +4788,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#iarvpppxde .gt_empty_group_heading {
+#bcbtsitmnu .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -4801,13 +4802,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#iarvpppxde .gt_from_md > :first-child {
+#bcbtsitmnu .gt_from_md > :first-child {
 margin-top: 0;
 }
-#iarvpppxde .gt_from_md > :last-child {
+#bcbtsitmnu .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#iarvpppxde .gt_row {
+#bcbtsitmnu .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4825,7 +4826,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#iarvpppxde .gt_stub {
+#bcbtsitmnu .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4837,7 +4838,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#iarvpppxde .gt_stub_row_group {
+#bcbtsitmnu .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4850,13 +4851,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#iarvpppxde .gt_row_group_first td {
+#bcbtsitmnu .gt_row_group_first td {
 border-top-width: 2px;
 }
-#iarvpppxde .gt_row_group_first th {
+#bcbtsitmnu .gt_row_group_first th {
 border-top-width: 2px;
 }
-#iarvpppxde .gt_summary_row {
+#bcbtsitmnu .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -4865,14 +4866,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#iarvpppxde .gt_first_summary_row {
+#bcbtsitmnu .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#iarvpppxde .gt_first_summary_row.thick {
+#bcbtsitmnu .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#iarvpppxde .gt_last_summary_row {
+#bcbtsitmnu .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4881,7 +4882,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#iarvpppxde .gt_grand_summary_row {
+#bcbtsitmnu .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -4890,7 +4891,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#iarvpppxde .gt_first_grand_summary_row {
+#bcbtsitmnu .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4899,7 +4900,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#iarvpppxde .gt_last_grand_summary_row_top {
+#bcbtsitmnu .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4908,10 +4909,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#iarvpppxde .gt_striped {
+#bcbtsitmnu .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#iarvpppxde .gt_table_body {
+#bcbtsitmnu .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -4919,7 +4920,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#iarvpppxde .gt_footnotes {
+#bcbtsitmnu .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -4932,7 +4933,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#iarvpppxde .gt_footnote {
+#bcbtsitmnu .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -4940,7 +4941,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#iarvpppxde .gt_sourcenotes {
+#bcbtsitmnu .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -4953,372 +4954,414 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#iarvpppxde .gt_sourcenote {
+#bcbtsitmnu .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#iarvpppxde .gt_left {
+#bcbtsitmnu .gt_left {
 text-align: left;
 }
-#iarvpppxde .gt_center {
+#bcbtsitmnu .gt_center {
 text-align: center;
 }
-#iarvpppxde .gt_right {
+#bcbtsitmnu .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#iarvpppxde .gt_font_normal {
+#bcbtsitmnu .gt_font_normal {
 font-weight: normal;
 }
-#iarvpppxde .gt_font_bold {
+#bcbtsitmnu .gt_font_bold {
 font-weight: bold;
 }
-#iarvpppxde .gt_font_italic {
+#bcbtsitmnu .gt_font_italic {
 font-style: italic;
 }
-#iarvpppxde .gt_super {
+#bcbtsitmnu .gt_super {
 font-size: 65%;
 }
-#iarvpppxde .gt_footnote_marks {
+#bcbtsitmnu .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#iarvpppxde .gt_asterisk {
+#bcbtsitmnu .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#iarvpppxde .gt_indent_1 {
+#bcbtsitmnu .gt_indent_1 {
 text-indent: 5px;
 }
-#iarvpppxde .gt_indent_2 {
+#bcbtsitmnu .gt_indent_2 {
 text-indent: 10px;
 }
-#iarvpppxde .gt_indent_3 {
+#bcbtsitmnu .gt_indent_3 {
 text-indent: 15px;
 }
-#iarvpppxde .gt_indent_4 {
+#bcbtsitmnu .gt_indent_4 {
 text-indent: 20px;
 }
-#iarvpppxde .gt_indent_5 {
+#bcbtsitmnu .gt_indent_5 {
 text-indent: 25px;
 }
-#iarvpppxde .katex-display {
+#bcbtsitmnu .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#iarvpppxde div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#bcbtsitmnu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
 
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="gt_col_headings gt_spanner_row header">
-<th rowspan="2" id="Rank" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Rank</th>
-<th colspan="2" id="Single words" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
+<th colspan="3" id="Single words" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
 Single words
 </div></th>
-<th colspan="2" id="Pair of words" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
+<th colspan="3" id="Pair of words" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
 Pair of words
 </div></th>
 </tr>
 <tr class="gt_col_headings even">
 <th id="Word" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Word</th>
+<th id="Rank1" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Rank1</th>
 <th id="n1" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Number of publications</th>
 <th id="Word-pair" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Word pair</th>
+<th id="Rank2" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Rank2</th>
 <th id="n2" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Number of publications</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">1</td>
 <td class="gt_row gt_left" headers="Word">model</td>
+<td class="gt_row gt_right" headers="Rank1">1</td>
 <td class="gt_row gt_right" headers="n1">152</td>
 <td class="gt_row gt_left" headers="Word pair">structured population</td>
+<td class="gt_row gt_right" headers="Rank2">1</td>
 <td class="gt_row gt_right" headers="n2">16</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">2</td>
 <td class="gt_row gt_left" headers="Word">population</td>
+<td class="gt_row gt_right" headers="Rank1">2</td>
 <td class="gt_row gt_right" headers="n1">145</td>
 <td class="gt_row gt_left" headers="Word pair">wright fisher</td>
+<td class="gt_row gt_right" headers="Rank2">2</td>
 <td class="gt_row gt_right" headers="n2">15</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">3</td>
 <td class="gt_row gt_left" headers="Word">evolution</td>
+<td class="gt_row gt_right" headers="Rank1">3</td>
 <td class="gt_row gt_right" headers="n1">55</td>
 <td class="gt_row gt_left" headers="Word pair">population genetic</td>
+<td class="gt_row gt_right" headers="Rank2">3</td>
 <td class="gt_row gt_right" headers="n2">13</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">4</td>
 <td class="gt_row gt_left" headers="Word">dynamic</td>
+<td class="gt_row gt_right" headers="Rank1">4</td>
 <td class="gt_row gt_right" headers="n1">54</td>
 <td class="gt_row gt_left" headers="Word pair">population dynamic</td>
+<td class="gt_row gt_right" headers="Rank2">4</td>
 <td class="gt_row gt_right" headers="n2">12</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">5</td>
 <td class="gt_row gt_left" headers="Word">selection</td>
+<td class="gt_row gt_right" headers="Rank1">5</td>
 <td class="gt_row gt_right" headers="n1">53</td>
 <td class="gt_row gt_left" headers="Word pair">frequency spectrum</td>
+<td class="gt_row gt_right" headers="Rank2">5</td>
 <td class="gt_row gt_right" headers="n2">11</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">6</td>
 <td class="gt_row gt_left" headers="Word">effect</td>
+<td class="gt_row gt_right" headers="Rank1">6</td>
 <td class="gt_row gt_right" headers="n1">47</td>
 <td class="gt_row gt_left" headers="Word pair">site frequency</td>
+<td class="gt_row gt_right" headers="Rank2">5</td>
 <td class="gt_row gt_right" headers="n2">11</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">7</td>
 <td class="gt_row gt_left" headers="Word">genetic</td>
+<td class="gt_row gt_right" headers="Rank1">7</td>
 <td class="gt_row gt_right" headers="n1">44</td>
 <td class="gt_row gt_left" headers="Word pair">population size</td>
+<td class="gt_row gt_right" headers="Rank2">7</td>
 <td class="gt_row gt_right" headers="n2">10</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">8</td>
 <td class="gt_row gt_left" headers="Word">coalescent</td>
+<td class="gt_row gt_right" headers="Rank1">8</td>
 <td class="gt_row gt_right" headers="n1">31</td>
 <td class="gt_row gt_left" headers="Word pair">age structured</td>
+<td class="gt_row gt_right" headers="Rank2">8</td>
 <td class="gt_row gt_right" headers="n2">8</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">9</td>
 <td class="gt_row gt_left" headers="Word">frequency</td>
+<td class="gt_row gt_right" headers="Rank1">8</td>
 <td class="gt_row gt_right" headers="n1">31</td>
 <td class="gt_row gt_left" headers="Word pair">allele frequency</td>
+<td class="gt_row gt_right" headers="Rank2">8</td>
 <td class="gt_row gt_right" headers="n2">8</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">10</td>
 <td class="gt_row gt_left" headers="Word">structure</td>
+<td class="gt_row gt_right" headers="Rank1">8</td>
 <td class="gt_row gt_right" headers="n1">31</td>
 <td class="gt_row gt_left" headers="Word pair">population model</td>
+<td class="gt_row gt_right" headers="Rank2">8</td>
 <td class="gt_row gt_right" headers="n2">8</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">11</td>
 <td class="gt_row gt_left" headers="Word">process</td>
+<td class="gt_row gt_right" headers="Rank1">11</td>
 <td class="gt_row gt_right" headers="n1">30</td>
 <td class="gt_row gt_left" headers="Word pair">cultural transmission</td>
+<td class="gt_row gt_right" headers="Rank2">11</td>
 <td class="gt_row gt_right" headers="n2">7</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">12</td>
 <td class="gt_row gt_left" headers="Word">distribution</td>
+<td class="gt_row gt_right" headers="Rank1">12</td>
 <td class="gt_row gt_right" headers="n1">29</td>
 <td class="gt_row gt_left" headers="Word pair">evolutionary dynamic</td>
+<td class="gt_row gt_right" headers="Rank2">11</td>
 <td class="gt_row gt_right" headers="n2">7</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">13</td>
 <td class="gt_row gt_left" headers="Word">evolutionary</td>
+<td class="gt_row gt_right" headers="Rank1">12</td>
 <td class="gt_row gt_right" headers="n1">29</td>
 <td class="gt_row gt_left" headers="Word pair">frequency dependent</td>
+<td class="gt_row gt_right" headers="Rank2">11</td>
 <td class="gt_row gt_right" headers="n2">7</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">14</td>
 <td class="gt_row gt_left" headers="Word">size</td>
+<td class="gt_row gt_right" headers="Rank1">12</td>
 <td class="gt_row gt_right" headers="n1">29</td>
 <td class="gt_row gt_left" headers="Word pair">mutation rate</td>
+<td class="gt_row gt_right" headers="Rank2">11</td>
 <td class="gt_row gt_right" headers="n2">7</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">15</td>
 <td class="gt_row gt_left" headers="Word">mutation</td>
+<td class="gt_row gt_right" headers="Rank1">15</td>
 <td class="gt_row gt_right" headers="n1">28</td>
 <td class="gt_row gt_left" headers="Word pair">dependent selection</td>
+<td class="gt_row gt_right" headers="Rank2">15</td>
 <td class="gt_row gt_right" headers="n2">6</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">16</td>
 <td class="gt_row gt_left" headers="Word">rate</td>
+<td class="gt_row gt_right" headers="Rank1">16</td>
 <td class="gt_row gt_right" headers="n1">27</td>
 <td class="gt_row gt_left" headers="Word pair">fisher diffusion</td>
+<td class="gt_row gt_right" headers="Rank2">15</td>
 <td class="gt_row gt_right" headers="n2">6</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">17</td>
 <td class="gt_row gt_left" headers="Word">spatial</td>
+<td class="gt_row gt_right" headers="Rank1">17</td>
 <td class="gt_row gt_right" headers="n1">26</td>
 <td class="gt_row gt_left" headers="Word pair">fixation probability</td>
+<td class="gt_row gt_right" headers="Rank2">15</td>
 <td class="gt_row gt_right" headers="n2">6</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">18</td>
 <td class="gt_row gt_left" headers="Word">environment</td>
+<td class="gt_row gt_right" headers="Rank1">18</td>
 <td class="gt_row gt_right" headers="n1">24</td>
 <td class="gt_row gt_left" headers="Word pair">linkage disequilibrium</td>
+<td class="gt_row gt_right" headers="Rank2">15</td>
 <td class="gt_row gt_right" headers="n2">6</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">19</td>
 <td class="gt_row gt_left" headers="Word">fitness</td>
+<td class="gt_row gt_right" headers="Rank1">18</td>
 <td class="gt_row gt_right" headers="n1">24</td>
 <td class="gt_row gt_left" headers="Word pair">quantitative trait</td>
+<td class="gt_row gt_right" headers="Rank2">15</td>
 <td class="gt_row gt_right" headers="n2">6</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">20</td>
 <td class="gt_row gt_left" headers="Word">cultural</td>
+<td class="gt_row gt_right" headers="Rank1">20</td>
 <td class="gt_row gt_right" headers="n1">23</td>
 <td class="gt_row gt_left" headers="Word pair">sex ratio</td>
+<td class="gt_row gt_right" headers="Rank2">15</td>
 <td class="gt_row gt_right" headers="n2">6</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">21</td>
 <td class="gt_row gt_left" headers="Word">approach</td>
+<td class="gt_row gt_right" headers="Rank1">21</td>
 <td class="gt_row gt_right" headers="n1">22</td>
 <td class="gt_row gt_left" headers="Word pair">allee effect</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">22</td>
 <td class="gt_row gt_left" headers="Word">time</td>
+<td class="gt_row gt_right" headers="Rank1">21</td>
 <td class="gt_row gt_right" headers="n1">22</td>
 <td class="gt_row gt_left" headers="Word pair">assortative mating</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">23</td>
 <td class="gt_row gt_left" headers="Word">application</td>
+<td class="gt_row gt_right" headers="Rank1">23</td>
 <td class="gt_row gt_right" headers="n1">21</td>
 <td class="gt_row gt_left" headers="Word pair">birth death</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">24</td>
 <td class="gt_row gt_left" headers="Word">theory</td>
+<td class="gt_row gt_right" headers="Rank1">23</td>
 <td class="gt_row gt_right" headers="n1">21</td>
 <td class="gt_row gt_left" headers="Word pair">branching process</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">25</td>
 <td class="gt_row gt_left" headers="Word">probability</td>
+<td class="gt_row gt_right" headers="Rank1">25</td>
 <td class="gt_row gt_right" headers="n1">20</td>
 <td class="gt_row gt_left" headers="Word pair">coalescent model</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">26</td>
 <td class="gt_row gt_left" headers="Word">site</td>
+<td class="gt_row gt_right" headers="Rank1">25</td>
 <td class="gt_row gt_right" headers="n1">20</td>
 <td class="gt_row gt_left" headers="Word pair">cultural evolution</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">27</td>
 <td class="gt_row gt_left" headers="Word">age</td>
+<td class="gt_row gt_right" headers="Rank1">27</td>
 <td class="gt_row gt_right" headers="n1">19</td>
 <td class="gt_row gt_left" headers="Word pair">density dependent</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">28</td>
 <td class="gt_row gt_left" headers="Word">inference</td>
+<td class="gt_row gt_right" headers="Rank1">27</td>
 <td class="gt_row gt_right" headers="n1">19</td>
 <td class="gt_row gt_left" headers="Word pair">directional selection</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">29</td>
 <td class="gt_row gt_left" headers="Word">specie</td>
+<td class="gt_row gt_right" headers="Rank1">27</td>
 <td class="gt_row gt_right" headers="n1">19</td>
 <td class="gt_row gt_left" headers="Word pair">heterogeneous environment</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">30</td>
 <td class="gt_row gt_left" headers="Word">trait</td>
+<td class="gt_row gt_right" headers="Rank1">27</td>
 <td class="gt_row gt_right" headers="n1">19</td>
 <td class="gt_row gt_left" headers="Word pair">inclusive fitness</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">31</td>
 <td class="gt_row gt_left" headers="Word">transmission</td>
+<td class="gt_row gt_right" headers="Rank1">27</td>
 <td class="gt_row gt_right" headers="n1">19</td>
 <td class="gt_row gt_left" headers="Word pair">moran model</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">32</td>
 <td class="gt_row gt_left" headers="Word">Fisher</td>
+<td class="gt_row gt_right" headers="Rank1">32</td>
 <td class="gt_row gt_right" headers="n1">18</td>
 <td class="gt_row gt_left" headers="Word pair">natural selection</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">33</td>
 <td class="gt_row gt_left" headers="Word">allele</td>
+<td class="gt_row gt_right" headers="Rank1">32</td>
 <td class="gt_row gt_right" headers="n1">18</td>
 <td class="gt_row gt_left" headers="Word pair">stationary distribution</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">5</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">34</td>
 <td class="gt_row gt_left" headers="Word">dependent</td>
+<td class="gt_row gt_right" headers="Rank1">32</td>
 <td class="gt_row gt_right" headers="n1">18</td>
 <td class="gt_row gt_left" headers="Word pair">asexual population</td>
+<td class="gt_row gt_right" headers="Rank2">34</td>
 <td class="gt_row gt_right" headers="n2">4</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">35</td>
 <td class="gt_row gt_left" headers="Word">dispersal</td>
+<td class="gt_row gt_right" headers="Rank1">32</td>
 <td class="gt_row gt_right" headers="n1">18</td>
 <td class="gt_row gt_left" headers="Word pair">cultural trait</td>
+<td class="gt_row gt_right" headers="Rank2">34</td>
 <td class="gt_row gt_right" headers="n2">4</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">36</td>
 <td class="gt_row gt_left" headers="Word">interaction</td>
+<td class="gt_row gt_right" headers="Rank1">32</td>
 <td class="gt_row gt_right" headers="n1">18</td>
 <td class="gt_row gt_left" headers="Word pair">demographic inference</td>
+<td class="gt_row gt_right" headers="Rank2">34</td>
 <td class="gt_row gt_right" headers="n2">4</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">37</td>
 <td class="gt_row gt_left" headers="Word">datum</td>
+<td class="gt_row gt_right" headers="Rank1">37</td>
 <td class="gt_row gt_right" headers="n1">17</td>
 <td class="gt_row gt_left" headers="Word pair">dynamic model</td>
+<td class="gt_row gt_right" headers="Rank2">34</td>
 <td class="gt_row gt_right" headers="n2">4</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">38</td>
 <td class="gt_row gt_left" headers="Word">coexistence</td>
+<td class="gt_row gt_right" headers="Rank1">38</td>
 <td class="gt_row gt_right" headers="n1">16</td>
 <td class="gt_row gt_left" headers="Word pair">effective population</td>
+<td class="gt_row gt_right" headers="Rank2">34</td>
 <td class="gt_row gt_right" headers="n2">4</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">39</td>
 <td class="gt_row gt_left" headers="Word">sex</td>
+<td class="gt_row gt_right" headers="Rank1">38</td>
 <td class="gt_row gt_right" headers="n1">16</td>
 <td class="gt_row gt_left" headers="Word pair">effective size</td>
+<td class="gt_row gt_right" headers="Rank2">34</td>
 <td class="gt_row gt_right" headers="n2">4</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">40</td>
 <td class="gt_row gt_left" headers="Word">Evolution</td>
+<td class="gt_row gt_right" headers="Rank1">40</td>
 <td class="gt_row gt_right" headers="n1">15</td>
 <td class="gt_row gt_left" headers="Word pair">feldman prize</td>
+<td class="gt_row gt_right" headers="Rank2">34</td>
 <td class="gt_row gt_right" headers="n2">4</td>
 </tr>
 </tbody>
@@ -5519,28 +5562,29 @@ Pair of words
 <span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">40</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
 <span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(<span class="st">&quot;Word pair&quot;</span>, word1<span class="sc">:</span>word2, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rank =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Rank, word, n1, <span class="st">&quot;Word pair&quot;</span>, n2) <span class="sc">|&gt;</span></span>
-<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Word =</span> word) <span class="sc">|&gt;</span></span>
-<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">n1 =</span> <span class="st">&quot;Number of publications&quot;</span>, <span class="at">n2 =</span> <span class="st">&quot;Number of publications&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Single words&quot;</span>, <span class="at">columns =</span> <span class="fu">c</span>(Word, n1)) <span class="sc">|&gt;</span></span>
-<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Pair of words&quot;</span>, <span class="at">columns =</span> <span class="fu">c</span>(<span class="st">&quot;Word pair&quot;</span>, n2)) <span class="co">#|&gt; as_latex() |&gt; as.character() |&gt; cat()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rank1 =</span> <span class="fu">rank</span>(<span class="sc">-</span>n1, <span class="at">ties.method =</span> <span class="st">&quot;min&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rank2 =</span> <span class="fu">rank</span>(<span class="sc">-</span>n2, <span class="at">ties.method =</span> <span class="st">&quot;min&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(word, Rank1, n1, <span class="st">&quot;Word pair&quot;</span>, Rank2, n2) <span class="sc">|&gt;</span></span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Word =</span> word) <span class="sc">|&gt;</span></span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">n1 =</span> <span class="st">&quot;Number of publications&quot;</span>, <span class="at">n2 =</span> <span class="st">&quot;Number of publications&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Single words&quot;</span>, <span class="at">columns =</span> <span class="fu">c</span>(Word, Rank1, n1)) <span class="sc">|&gt;</span></span>
+<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Pair of words&quot;</span>, <span class="at">columns =</span> <span class="fu">c</span>(<span class="st">&quot;Word pair&quot;</span>, Rank2, n2)) <span class="co">#|&gt; as_latex() |&gt; as.character() |&gt; cat()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="bkprlhcaux" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#bkprlhcaux table {
+<div id="ffeocwdnqc" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ffeocwdnqc table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#bkprlhcaux thead, #bkprlhcaux tbody, #bkprlhcaux tfoot, #bkprlhcaux tr, #bkprlhcaux td, #bkprlhcaux th {
+#ffeocwdnqc thead, #ffeocwdnqc tbody, #ffeocwdnqc tfoot, #ffeocwdnqc tr, #ffeocwdnqc td, #ffeocwdnqc th {
 border-style: none;
 }
-#bkprlhcaux p {
+#ffeocwdnqc p {
 margin: 0;
 padding: 0;
 }
-#bkprlhcaux .gt_table {
+#ffeocwdnqc .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -5565,11 +5609,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#bkprlhcaux .gt_caption {
+#ffeocwdnqc .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#bkprlhcaux .gt_title {
+#ffeocwdnqc .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -5580,7 +5624,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#bkprlhcaux .gt_subtitle {
+#ffeocwdnqc .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -5591,7 +5635,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#bkprlhcaux .gt_heading {
+#ffeocwdnqc .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -5602,12 +5646,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#bkprlhcaux .gt_bottom_border {
+#ffeocwdnqc .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#bkprlhcaux .gt_col_headings {
+#ffeocwdnqc .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -5621,7 +5665,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#bkprlhcaux .gt_col_heading {
+#ffeocwdnqc .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5640,7 +5684,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#bkprlhcaux .gt_column_spanner_outer {
+#ffeocwdnqc .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5651,13 +5695,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#bkprlhcaux .gt_column_spanner_outer:first-child {
+#ffeocwdnqc .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#bkprlhcaux .gt_column_spanner_outer:last-child {
+#ffeocwdnqc .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#bkprlhcaux .gt_column_spanner {
+#ffeocwdnqc .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -5668,10 +5712,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#bkprlhcaux .gt_spanner_row {
+#ffeocwdnqc .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#bkprlhcaux .gt_group_heading {
+#ffeocwdnqc .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5696,7 +5740,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#bkprlhcaux .gt_empty_group_heading {
+#ffeocwdnqc .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -5710,13 +5754,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#bkprlhcaux .gt_from_md > :first-child {
+#ffeocwdnqc .gt_from_md > :first-child {
 margin-top: 0;
 }
-#bkprlhcaux .gt_from_md > :last-child {
+#ffeocwdnqc .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#bkprlhcaux .gt_row {
+#ffeocwdnqc .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5734,7 +5778,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#bkprlhcaux .gt_stub {
+#ffeocwdnqc .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5746,7 +5790,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#bkprlhcaux .gt_stub_row_group {
+#ffeocwdnqc .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5759,13 +5803,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#bkprlhcaux .gt_row_group_first td {
+#ffeocwdnqc .gt_row_group_first td {
 border-top-width: 2px;
 }
-#bkprlhcaux .gt_row_group_first th {
+#ffeocwdnqc .gt_row_group_first th {
 border-top-width: 2px;
 }
-#bkprlhcaux .gt_summary_row {
+#ffeocwdnqc .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -5774,14 +5818,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#bkprlhcaux .gt_first_summary_row {
+#ffeocwdnqc .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#bkprlhcaux .gt_first_summary_row.thick {
+#ffeocwdnqc .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#bkprlhcaux .gt_last_summary_row {
+#ffeocwdnqc .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5790,7 +5834,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#bkprlhcaux .gt_grand_summary_row {
+#ffeocwdnqc .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -5799,7 +5843,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#bkprlhcaux .gt_first_grand_summary_row {
+#ffeocwdnqc .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5808,7 +5852,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#bkprlhcaux .gt_last_grand_summary_row_top {
+#ffeocwdnqc .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5817,10 +5861,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#bkprlhcaux .gt_striped {
+#ffeocwdnqc .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#bkprlhcaux .gt_table_body {
+#ffeocwdnqc .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -5828,7 +5872,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#bkprlhcaux .gt_footnotes {
+#ffeocwdnqc .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -5841,7 +5885,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#bkprlhcaux .gt_footnote {
+#ffeocwdnqc .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -5849,7 +5893,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#bkprlhcaux .gt_sourcenotes {
+#ffeocwdnqc .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -5862,372 +5906,414 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#bkprlhcaux .gt_sourcenote {
+#ffeocwdnqc .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#bkprlhcaux .gt_left {
+#ffeocwdnqc .gt_left {
 text-align: left;
 }
-#bkprlhcaux .gt_center {
+#ffeocwdnqc .gt_center {
 text-align: center;
 }
-#bkprlhcaux .gt_right {
+#ffeocwdnqc .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#bkprlhcaux .gt_font_normal {
+#ffeocwdnqc .gt_font_normal {
 font-weight: normal;
 }
-#bkprlhcaux .gt_font_bold {
+#ffeocwdnqc .gt_font_bold {
 font-weight: bold;
 }
-#bkprlhcaux .gt_font_italic {
+#ffeocwdnqc .gt_font_italic {
 font-style: italic;
 }
-#bkprlhcaux .gt_super {
+#ffeocwdnqc .gt_super {
 font-size: 65%;
 }
-#bkprlhcaux .gt_footnote_marks {
+#ffeocwdnqc .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#bkprlhcaux .gt_asterisk {
+#ffeocwdnqc .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#bkprlhcaux .gt_indent_1 {
+#ffeocwdnqc .gt_indent_1 {
 text-indent: 5px;
 }
-#bkprlhcaux .gt_indent_2 {
+#ffeocwdnqc .gt_indent_2 {
 text-indent: 10px;
 }
-#bkprlhcaux .gt_indent_3 {
+#ffeocwdnqc .gt_indent_3 {
 text-indent: 15px;
 }
-#bkprlhcaux .gt_indent_4 {
+#ffeocwdnqc .gt_indent_4 {
 text-indent: 20px;
 }
-#bkprlhcaux .gt_indent_5 {
+#ffeocwdnqc .gt_indent_5 {
 text-indent: 25px;
 }
-#bkprlhcaux .katex-display {
+#ffeocwdnqc .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#bkprlhcaux div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ffeocwdnqc div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
 
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="gt_col_headings gt_spanner_row header">
-<th rowspan="2" id="Rank" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Rank</th>
-<th colspan="2" id="Single words" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
+<th colspan="3" id="Single words" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
 Single words
 </div></th>
-<th colspan="2" id="Pair of words" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
+<th colspan="3" id="Pair of words" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
 Pair of words
 </div></th>
 </tr>
 <tr class="gt_col_headings even">
 <th id="Word" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Word</th>
+<th id="Rank1" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Rank1</th>
 <th id="n1" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Number of publications</th>
 <th id="Word-pair" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Word pair</th>
+<th id="Rank2" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Rank2</th>
 <th id="n2" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Number of publications</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">1</td>
 <td class="gt_row gt_left" headers="Word">model</td>
+<td class="gt_row gt_right" headers="Rank1">1</td>
 <td class="gt_row gt_right" headers="n1">539</td>
 <td class="gt_row gt_left" headers="Word pair">population dynamic</td>
+<td class="gt_row gt_right" headers="Rank2">1</td>
 <td class="gt_row gt_right" headers="n2">58</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">2</td>
 <td class="gt_row gt_left" headers="Word">population</td>
+<td class="gt_row gt_right" headers="Rank1">2</td>
 <td class="gt_row gt_right" headers="n1">514</td>
 <td class="gt_row gt_left" headers="Word pair">predator prey</td>
+<td class="gt_row gt_right" headers="Rank2">2</td>
 <td class="gt_row gt_right" headers="n2">48</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">3</td>
 <td class="gt_row gt_left" headers="Word">dynamic</td>
+<td class="gt_row gt_right" headers="Rank1">3</td>
 <td class="gt_row gt_right" headers="n1">215</td>
 <td class="gt_row gt_left" headers="Word pair">population model</td>
+<td class="gt_row gt_right" headers="Rank2">3</td>
 <td class="gt_row gt_right" headers="n2">45</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">4</td>
 <td class="gt_row gt_left" headers="Word">selection</td>
+<td class="gt_row gt_right" headers="Rank1">4</td>
 <td class="gt_row gt_right" headers="n1">203</td>
 <td class="gt_row gt_left" headers="Word pair">population genetic</td>
+<td class="gt_row gt_right" headers="Rank2">4</td>
 <td class="gt_row gt_right" headers="n2">31</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">5</td>
 <td class="gt_row gt_left" headers="Word">effect</td>
+<td class="gt_row gt_right" headers="Rank1">5</td>
 <td class="gt_row gt_right" headers="n1">157</td>
 <td class="gt_row gt_left" headers="Word pair">structured population</td>
+<td class="gt_row gt_right" headers="Rank2">5</td>
 <td class="gt_row gt_right" headers="n2">30</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">6</td>
 <td class="gt_row gt_left" headers="Word">genetic</td>
+<td class="gt_row gt_right" headers="Rank1">6</td>
 <td class="gt_row gt_right" headers="n1">141</td>
 <td class="gt_row gt_left" headers="Word pair">sex ratio</td>
+<td class="gt_row gt_right" headers="Rank2">6</td>
 <td class="gt_row gt_right" headers="n2">26</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">7</td>
 <td class="gt_row gt_left" headers="Word">evolution</td>
+<td class="gt_row gt_right" headers="Rank1">7</td>
 <td class="gt_row gt_right" headers="n1">130</td>
 <td class="gt_row gt_left" headers="Word pair">assortative mating</td>
+<td class="gt_row gt_right" headers="Rank2">7</td>
 <td class="gt_row gt_right" headers="n2">25</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">8</td>
 <td class="gt_row gt_left" headers="Word">environment</td>
+<td class="gt_row gt_right" headers="Rank1">8</td>
 <td class="gt_row gt_right" headers="n1">102</td>
 <td class="gt_row gt_left" headers="Word pair">population growth</td>
+<td class="gt_row gt_right" headers="Rank2">7</td>
 <td class="gt_row gt_right" headers="n2">25</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">9</td>
 <td class="gt_row gt_left" headers="Word">gene</td>
+<td class="gt_row gt_right" headers="Rank1">9</td>
 <td class="gt_row gt_right" headers="n1">89</td>
 <td class="gt_row gt_left" headers="Word pair">subdivided population</td>
+<td class="gt_row gt_right" headers="Rank2">7</td>
 <td class="gt_row gt_right" headers="n2">25</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">10</td>
 <td class="gt_row gt_left" headers="Word">time</td>
+<td class="gt_row gt_right" headers="Rank1">10</td>
 <td class="gt_row gt_right" headers="n1">87</td>
 <td class="gt_row gt_left" headers="Word pair">population size</td>
+<td class="gt_row gt_right" headers="Rank2">10</td>
 <td class="gt_row gt_right" headers="n2">24</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">11</td>
 <td class="gt_row gt_left" headers="Word">structure</td>
+<td class="gt_row gt_right" headers="Rank1">11</td>
 <td class="gt_row gt_right" headers="n1">86</td>
 <td class="gt_row gt_left" headers="Word pair">life history</td>
+<td class="gt_row gt_right" headers="Rank2">11</td>
 <td class="gt_row gt_right" headers="n2">23</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">12</td>
 <td class="gt_row gt_left" headers="Word">allele</td>
+<td class="gt_row gt_right" headers="Rank1">12</td>
 <td class="gt_row gt_right" headers="n1">80</td>
 <td class="gt_row gt_left" headers="Word pair">finite population</td>
+<td class="gt_row gt_right" headers="Rank2">12</td>
 <td class="gt_row gt_right" headers="n2">22</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">13</td>
 <td class="gt_row gt_left" headers="Word">distribution</td>
+<td class="gt_row gt_right" headers="Rank1">12</td>
 <td class="gt_row gt_right" headers="n1">80</td>
 <td class="gt_row gt_left" headers="Word pair">linkage disequilibrium</td>
+<td class="gt_row gt_right" headers="Rank2">13</td>
 <td class="gt_row gt_right" headers="n2">19</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">14</td>
 <td class="gt_row gt_left" headers="Word">predator</td>
+<td class="gt_row gt_right" headers="Rank1">12</td>
 <td class="gt_row gt_right" headers="n1">80</td>
 <td class="gt_row gt_left" headers="Word pair">natural selection</td>
+<td class="gt_row gt_right" headers="Rank2">13</td>
 <td class="gt_row gt_right" headers="n2">19</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">15</td>
 <td class="gt_row gt_left" headers="Word">theory</td>
+<td class="gt_row gt_right" headers="Rank1">15</td>
 <td class="gt_row gt_right" headers="n1">78</td>
 <td class="gt_row gt_left" headers="Word pair">sexual selection</td>
+<td class="gt_row gt_right" headers="Rank2">13</td>
 <td class="gt_row gt_right" headers="n2">19</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">16</td>
 <td class="gt_row gt_left" headers="Word">competition</td>
+<td class="gt_row gt_right" headers="Rank1">16</td>
 <td class="gt_row gt_right" headers="n1">77</td>
 <td class="gt_row gt_left" headers="Word pair">age structured</td>
+<td class="gt_row gt_right" headers="Rank2">16</td>
 <td class="gt_row gt_right" headers="n2">18</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">17</td>
 <td class="gt_row gt_left" headers="Word">rate</td>
+<td class="gt_row gt_right" headers="Rank1">16</td>
 <td class="gt_row gt_right" headers="n1">77</td>
 <td class="gt_row gt_left" headers="Word pair">frequency dependent</td>
+<td class="gt_row gt_right" headers="Rank2">16</td>
 <td class="gt_row gt_right" headers="n2">18</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">18</td>
 <td class="gt_row gt_left" headers="Word">stochastic</td>
+<td class="gt_row gt_right" headers="Rank1">16</td>
 <td class="gt_row gt_right" headers="n1">77</td>
 <td class="gt_row gt_left" headers="Word pair">random mating</td>
+<td class="gt_row gt_right" headers="Rank2">18</td>
 <td class="gt_row gt_right" headers="n2">17</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">19</td>
 <td class="gt_row gt_left" headers="Word">size</td>
+<td class="gt_row gt_right" headers="Rank1">19</td>
 <td class="gt_row gt_right" headers="n1">76</td>
 <td class="gt_row gt_left" headers="Word pair">stochastic model</td>
+<td class="gt_row gt_right" headers="Rank2">19</td>
 <td class="gt_row gt_right" headers="n2">16</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">20</td>
 <td class="gt_row gt_left" headers="Word">system</td>
+<td class="gt_row gt_right" headers="Rank1">20</td>
 <td class="gt_row gt_right" headers="n1">75</td>
 <td class="gt_row gt_left" headers="Word pair">variable environment</td>
+<td class="gt_row gt_right" headers="Rank2">19</td>
 <td class="gt_row gt_right" headers="n2">16</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">21</td>
 <td class="gt_row gt_left" headers="Word">mutation</td>
+<td class="gt_row gt_right" headers="Rank1">21</td>
 <td class="gt_row gt_right" headers="n1">74</td>
 <td class="gt_row gt_left" headers="Word pair">allele frequency</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">15</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">22</td>
 <td class="gt_row gt_left" headers="Word">sex</td>
+<td class="gt_row gt_right" headers="Rank1">22</td>
 <td class="gt_row gt_right" headers="n1">73</td>
 <td class="gt_row gt_left" headers="Word pair">density dependent</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">15</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">23</td>
 <td class="gt_row gt_left" headers="Word">prey</td>
+<td class="gt_row gt_right" headers="Rank1">23</td>
 <td class="gt_row gt_right" headers="n1">70</td>
 <td class="gt_row gt_left" headers="Word pair">genetic drift</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">15</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">24</td>
 <td class="gt_row gt_left" headers="Word">neutral</td>
+<td class="gt_row gt_right" headers="Rank1">24</td>
 <td class="gt_row gt_right" headers="n1">67</td>
 <td class="gt_row gt_left" headers="Word pair">neutral allele</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">15</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">25</td>
 <td class="gt_row gt_left" headers="Word">evolutionary</td>
+<td class="gt_row gt_right" headers="Rank1">25</td>
 <td class="gt_row gt_right" headers="n1">66</td>
 <td class="gt_row gt_left" headers="Word pair">selection model</td>
+<td class="gt_row gt_right" headers="Rank2">21</td>
 <td class="gt_row gt_right" headers="n2">15</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">26</td>
 <td class="gt_row gt_left" headers="Word">stability</td>
+<td class="gt_row gt_right" headers="Rank1">25</td>
 <td class="gt_row gt_right" headers="n1">66</td>
 <td class="gt_row gt_left" headers="Word pair">growth rate</td>
+<td class="gt_row gt_right" headers="Rank2">26</td>
 <td class="gt_row gt_right" headers="n2">14</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">27</td>
 <td class="gt_row gt_left" headers="Word">frequency</td>
+<td class="gt_row gt_right" headers="Rank1">27</td>
 <td class="gt_row gt_right" headers="n1">65</td>
 <td class="gt_row gt_left" headers="Word pair">plant population</td>
+<td class="gt_row gt_right" headers="Rank2">26</td>
 <td class="gt_row gt_right" headers="n2">14</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">28</td>
 <td class="gt_row gt_left" headers="Word">optimal</td>
+<td class="gt_row gt_right" headers="Rank1">28</td>
 <td class="gt_row gt_right" headers="n1">63</td>
 <td class="gt_row gt_left" headers="Word pair">dependent selection</td>
+<td class="gt_row gt_right" headers="Rank2">28</td>
 <td class="gt_row gt_right" headers="n2">13</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">29</td>
 <td class="gt_row gt_left" headers="Word">growth</td>
+<td class="gt_row gt_right" headers="Rank1">29</td>
 <td class="gt_row gt_right" headers="n1">61</td>
 <td class="gt_row gt_left" headers="Word pair">island model</td>
+<td class="gt_row gt_right" headers="Rank2">28</td>
 <td class="gt_row gt_right" headers="n2">13</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">30</td>
 <td class="gt_row gt_left" headers="Word">mating</td>
+<td class="gt_row gt_right" headers="Rank1">29</td>
 <td class="gt_row gt_right" headers="n1">61</td>
 <td class="gt_row gt_left" headers="Word pair">optimal foraging</td>
+<td class="gt_row gt_right" headers="Rank2">28</td>
 <td class="gt_row gt_right" headers="n2">13</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">31</td>
 <td class="gt_row gt_left" headers="Word">random</td>
+<td class="gt_row gt_right" headers="Rank1">29</td>
 <td class="gt_row gt_right" headers="n1">61</td>
 <td class="gt_row gt_left" headers="Word pair">overlapping generation</td>
+<td class="gt_row gt_right" headers="Rank2">28</td>
 <td class="gt_row gt_right" headers="n2">13</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">32</td>
 <td class="gt_row gt_left" headers="Word">process</td>
+<td class="gt_row gt_right" headers="Rank1">32</td>
 <td class="gt_row gt_right" headers="n1">60</td>
 <td class="gt_row gt_left" headers="Word pair">random environment</td>
+<td class="gt_row gt_right" headers="Rank2">28</td>
 <td class="gt_row gt_right" headers="n2">13</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">33</td>
 <td class="gt_row gt_left" headers="Word">age</td>
+<td class="gt_row gt_right" headers="Rank1">33</td>
 <td class="gt_row gt_right" headers="n1">59</td>
 <td class="gt_row gt_left" headers="Word pair">allee effect</td>
+<td class="gt_row gt_right" headers="Rank2">33</td>
 <td class="gt_row gt_right" headers="n2">12</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">34</td>
 <td class="gt_row gt_left" headers="Word">spatial</td>
+<td class="gt_row gt_right" headers="Rank1">33</td>
 <td class="gt_row gt_right" headers="n1">59</td>
 <td class="gt_row gt_left" headers="Word pair">density dependence</td>
+<td class="gt_row gt_right" headers="Rank2">33</td>
 <td class="gt_row gt_right" headers="n2">12</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">35</td>
 <td class="gt_row gt_left" headers="Word">dependent</td>
+<td class="gt_row gt_right" headers="Rank1">35</td>
 <td class="gt_row gt_right" headers="n1">58</td>
 <td class="gt_row gt_left" headers="Word pair">locus model</td>
+<td class="gt_row gt_right" headers="Rank2">33</td>
 <td class="gt_row gt_right" headers="n2">12</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">36</td>
 <td class="gt_row gt_left" headers="Word">locus</td>
+<td class="gt_row gt_right" headers="Rank1">36</td>
 <td class="gt_row gt_right" headers="n1">55</td>
 <td class="gt_row gt_left" headers="Word pair">mating population</td>
+<td class="gt_row gt_right" headers="Rank2">33</td>
 <td class="gt_row gt_right" headers="n2">12</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">37</td>
 <td class="gt_row gt_left" headers="Word">density</td>
+<td class="gt_row gt_right" headers="Rank1">37</td>
 <td class="gt_row gt_right" headers="n1">54</td>
 <td class="gt_row gt_left" headers="Word pair">spatial heterogeneity</td>
+<td class="gt_row gt_right" headers="Rank2">33</td>
 <td class="gt_row gt_right" headers="n2">12</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">38</td>
 <td class="gt_row gt_left" headers="Word">plant</td>
+<td class="gt_row gt_right" headers="Rank1">38</td>
 <td class="gt_row gt_right" headers="n1">53</td>
 <td class="gt_row gt_left" headers="Word pair">discrete time</td>
+<td class="gt_row gt_right" headers="Rank2">38</td>
 <td class="gt_row gt_right" headers="n2">11</td>
 </tr>
 <tr class="odd">
-<td class="gt_row gt_right" headers="Rank">39</td>
 <td class="gt_row gt_left" headers="Word">specie</td>
+<td class="gt_row gt_right" headers="Rank1">39</td>
 <td class="gt_row gt_right" headers="n1">49</td>
 <td class="gt_row gt_left" headers="Word pair">fixation probability</td>
+<td class="gt_row gt_right" headers="Rank2">38</td>
 <td class="gt_row gt_right" headers="n2">11</td>
 </tr>
 <tr class="even">
-<td class="gt_row gt_right" headers="Rank">40</td>
 <td class="gt_row gt_left" headers="Word">interaction</td>
+<td class="gt_row gt_right" headers="Rank1">40</td>
 <td class="gt_row gt_right" headers="n1">48</td>
 <td class="gt_row gt_left" headers="Word pair">genetic model</td>
+<td class="gt_row gt_right" headers="Rank2">38</td>
 <td class="gt_row gt_right" headers="n2">11</td>
 </tr>
 </tbody>
@@ -6245,17 +6331,17 @@ Pair of words
 <div class="cell">
 <div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cbind</span>(</span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  one_gram_spacy <span class="sc">|&gt;</span></span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(one_gram_old_spacy <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Rank_old1 =</span> <span class="fu">row_number</span>()), </span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(one_gram_old_spacy <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Rank_old1 =</span> <span class="fu">rank</span>(<span class="sc">-</span>n, <span class="at">ties.method =</span> <span class="st">&quot;min&quot;</span>)), </span>
 <span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">by =</span> <span class="fu">join_by</span>(word), <span class="at">suffix =</span> <span class="fu">c</span>(<span class="st">&quot;_new1&quot;</span>, <span class="st">&quot;_old1&quot;</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">20</span>),</span>
 <span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>  two_gram_spacy <span class="sc">|&gt;</span></span>
 <span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unite</span>(<span class="st">&quot;Word pair&quot;</span>, word1<span class="sc">:</span>word2, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(two_gram_old_spacy <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Rank_old2 =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span> <span class="fu">unite</span>(<span class="st">&quot;Word pair&quot;</span>, word1<span class="sc">:</span>word2, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>), </span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">left_join</span>(two_gram_old_spacy <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Rank_old2 =</span> <span class="fu">rank</span>(<span class="sc">-</span>n, <span class="at">ties.method =</span> <span class="st">&quot;min&quot;</span>)) <span class="sc">|&gt;</span> <span class="fu">unite</span>(<span class="st">&quot;Word pair&quot;</span>, word1<span class="sc">:</span>word2, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>), </span>
 <span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>              <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">&quot;Word pair&quot;</span>), <span class="at">suffix =</span> <span class="fu">c</span>(<span class="st">&quot;_new2&quot;</span>, <span class="st">&quot;_old2&quot;</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">20</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
-<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rank_new1 =</span> <span class="fu">row_number</span>(), <span class="at">Rank_new2 =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb56-13"><a href="#cb56-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rank_new1 =</span> <span class="fu">rank</span>(<span class="sc">-</span>n_new1, <span class="at">ties.method =</span> <span class="st">&quot;min&quot;</span>), <span class="at">Rank_new2 =</span> <span class="fu">rank</span>(<span class="sc">-</span>n_new2, <span class="at">ties.method =</span> <span class="st">&quot;min&quot;</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb56-14"><a href="#cb56-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">#select(word, n_new1, n_old1, Rank_new1, Rank_old1, &quot;Word pair&quot;, n_new2, n_old2, Rank_new2, Rank_old2) |&gt;</span></span>
 <span id="cb56-15"><a href="#cb56-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(word, n_new1, Rank_new1, Rank_old1, <span class="st">&quot;Word pair&quot;</span>, n_new2, Rank_new2, Rank_old2) <span class="sc">|&gt;</span></span>
 <span id="cb56-16"><a href="#cb56-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
@@ -6274,20 +6360,20 @@ Pair of words
 <span id="cb56-29"><a href="#cb56-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Single words&quot;</span>, <span class="at">spanners =</span> <span class="fu">c</span>(<span class="st">&quot;one_pubs_span&quot;</span>, <span class="st">&quot;one_rank_span&quot;</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb56-30"><a href="#cb56-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Pair of words&quot;</span>, <span class="at">spanners =</span> <span class="fu">c</span>(<span class="st">&quot;two_pubs_span&quot;</span>, <span class="st">&quot;two_rank_span&quot;</span>)) <span class="co">#|&gt; as_latex() |&gt; as.character() |&gt; cat()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="dpavqzdktk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dpavqzdktk table {
+<div id="tlbwvxcfvx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#tlbwvxcfvx table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#dpavqzdktk thead, #dpavqzdktk tbody, #dpavqzdktk tfoot, #dpavqzdktk tr, #dpavqzdktk td, #dpavqzdktk th {
+#tlbwvxcfvx thead, #tlbwvxcfvx tbody, #tlbwvxcfvx tfoot, #tlbwvxcfvx tr, #tlbwvxcfvx td, #tlbwvxcfvx th {
 border-style: none;
 }
-#dpavqzdktk p {
+#tlbwvxcfvx p {
 margin: 0;
 padding: 0;
 }
-#dpavqzdktk .gt_table {
+#tlbwvxcfvx .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -6312,11 +6398,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#dpavqzdktk .gt_caption {
+#tlbwvxcfvx .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#dpavqzdktk .gt_title {
+#tlbwvxcfvx .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -6327,7 +6413,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#dpavqzdktk .gt_subtitle {
+#tlbwvxcfvx .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -6338,7 +6424,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#dpavqzdktk .gt_heading {
+#tlbwvxcfvx .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -6349,12 +6435,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#dpavqzdktk .gt_bottom_border {
+#tlbwvxcfvx .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#dpavqzdktk .gt_col_headings {
+#tlbwvxcfvx .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -6368,7 +6454,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#dpavqzdktk .gt_col_heading {
+#tlbwvxcfvx .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -6387,7 +6473,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#dpavqzdktk .gt_column_spanner_outer {
+#tlbwvxcfvx .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -6398,13 +6484,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#dpavqzdktk .gt_column_spanner_outer:first-child {
+#tlbwvxcfvx .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#dpavqzdktk .gt_column_spanner_outer:last-child {
+#tlbwvxcfvx .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#dpavqzdktk .gt_column_spanner {
+#tlbwvxcfvx .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -6415,10 +6501,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#dpavqzdktk .gt_spanner_row {
+#tlbwvxcfvx .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#dpavqzdktk .gt_group_heading {
+#tlbwvxcfvx .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -6443,7 +6529,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#dpavqzdktk .gt_empty_group_heading {
+#tlbwvxcfvx .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -6457,13 +6543,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#dpavqzdktk .gt_from_md > :first-child {
+#tlbwvxcfvx .gt_from_md > :first-child {
 margin-top: 0;
 }
-#dpavqzdktk .gt_from_md > :last-child {
+#tlbwvxcfvx .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#dpavqzdktk .gt_row {
+#tlbwvxcfvx .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -6481,7 +6567,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#dpavqzdktk .gt_stub {
+#tlbwvxcfvx .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -6493,7 +6579,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#dpavqzdktk .gt_stub_row_group {
+#tlbwvxcfvx .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -6506,13 +6592,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#dpavqzdktk .gt_row_group_first td {
+#tlbwvxcfvx .gt_row_group_first td {
 border-top-width: 2px;
 }
-#dpavqzdktk .gt_row_group_first th {
+#tlbwvxcfvx .gt_row_group_first th {
 border-top-width: 2px;
 }
-#dpavqzdktk .gt_summary_row {
+#tlbwvxcfvx .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -6521,14 +6607,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#dpavqzdktk .gt_first_summary_row {
+#tlbwvxcfvx .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#dpavqzdktk .gt_first_summary_row.thick {
+#tlbwvxcfvx .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#dpavqzdktk .gt_last_summary_row {
+#tlbwvxcfvx .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -6537,7 +6623,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#dpavqzdktk .gt_grand_summary_row {
+#tlbwvxcfvx .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -6546,7 +6632,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#dpavqzdktk .gt_first_grand_summary_row {
+#tlbwvxcfvx .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -6555,7 +6641,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#dpavqzdktk .gt_last_grand_summary_row_top {
+#tlbwvxcfvx .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -6564,10 +6650,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#dpavqzdktk .gt_striped {
+#tlbwvxcfvx .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#dpavqzdktk .gt_table_body {
+#tlbwvxcfvx .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -6575,7 +6661,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#dpavqzdktk .gt_footnotes {
+#tlbwvxcfvx .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -6588,7 +6674,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#dpavqzdktk .gt_footnote {
+#tlbwvxcfvx .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -6596,7 +6682,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#dpavqzdktk .gt_sourcenotes {
+#tlbwvxcfvx .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -6609,64 +6695,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#dpavqzdktk .gt_sourcenote {
+#tlbwvxcfvx .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#dpavqzdktk .gt_left {
+#tlbwvxcfvx .gt_left {
 text-align: left;
 }
-#dpavqzdktk .gt_center {
+#tlbwvxcfvx .gt_center {
 text-align: center;
 }
-#dpavqzdktk .gt_right {
+#tlbwvxcfvx .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#dpavqzdktk .gt_font_normal {
+#tlbwvxcfvx .gt_font_normal {
 font-weight: normal;
 }
-#dpavqzdktk .gt_font_bold {
+#tlbwvxcfvx .gt_font_bold {
 font-weight: bold;
 }
-#dpavqzdktk .gt_font_italic {
+#tlbwvxcfvx .gt_font_italic {
 font-style: italic;
 }
-#dpavqzdktk .gt_super {
+#tlbwvxcfvx .gt_super {
 font-size: 65%;
 }
-#dpavqzdktk .gt_footnote_marks {
+#tlbwvxcfvx .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#dpavqzdktk .gt_asterisk {
+#tlbwvxcfvx .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#dpavqzdktk .gt_indent_1 {
+#tlbwvxcfvx .gt_indent_1 {
 text-indent: 5px;
 }
-#dpavqzdktk .gt_indent_2 {
+#tlbwvxcfvx .gt_indent_2 {
 text-indent: 10px;
 }
-#dpavqzdktk .gt_indent_3 {
+#tlbwvxcfvx .gt_indent_3 {
 text-indent: 15px;
 }
-#dpavqzdktk .gt_indent_4 {
+#tlbwvxcfvx .gt_indent_4 {
 text-indent: 20px;
 }
-#dpavqzdktk .gt_indent_5 {
+#tlbwvxcfvx .gt_indent_5 {
 text-indent: 25px;
 }
-#dpavqzdktk .katex-display {
+#tlbwvxcfvx .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#dpavqzdktk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#tlbwvxcfvx div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -6737,7 +6823,7 @@ Rank
 <td class="gt_row gt_left" headers="Word pair">wright fisher</td>
 <td class="gt_row gt_right" headers="n_new2">15</td>
 <td class="gt_row gt_right" headers="Rank_new2">2</td>
-<td class="gt_row gt_right" headers="Rank_old2">58</td>
+<td class="gt_row gt_right" headers="Rank_old2">51</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="word">evolution</td>
@@ -6767,7 +6853,7 @@ Rank
 <td class="gt_row gt_left" headers="Word pair">frequency spectrum</td>
 <td class="gt_row gt_right" headers="n_new2">11</td>
 <td class="gt_row gt_right" headers="Rank_new2">5</td>
-<td class="gt_row gt_right" headers="Rank_old2">78</td>
+<td class="gt_row gt_right" headers="Rank_old2">72</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="word">effect</td>
@@ -6776,8 +6862,8 @@ Rank
 <td class="gt_row gt_right" headers="Rank_old1">5</td>
 <td class="gt_row gt_left" headers="Word pair">site frequency</td>
 <td class="gt_row gt_right" headers="n_new2">11</td>
-<td class="gt_row gt_right" headers="Rank_new2">6</td>
-<td class="gt_row gt_right" headers="Rank_old2">770</td>
+<td class="gt_row gt_right" headers="Rank_new2">5</td>
+<td class="gt_row gt_right" headers="Rank_old2">401</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="word">genetic</td>
@@ -6802,21 +6888,21 @@ Rank
 <tr class="odd">
 <td class="gt_row gt_left" headers="word">frequency</td>
 <td class="gt_row gt_right" headers="n_new1">31</td>
-<td class="gt_row gt_right" headers="Rank_new1">9</td>
+<td class="gt_row gt_right" headers="Rank_new1">8</td>
 <td class="gt_row gt_right" headers="Rank_old1">27</td>
 <td class="gt_row gt_left" headers="Word pair">allele frequency</td>
 <td class="gt_row gt_right" headers="n_new2">8</td>
-<td class="gt_row gt_right" headers="Rank_new2">9</td>
+<td class="gt_row gt_right" headers="Rank_new2">8</td>
 <td class="gt_row gt_right" headers="Rank_old2">21</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="word">structure</td>
 <td class="gt_row gt_right" headers="n_new1">31</td>
-<td class="gt_row gt_right" headers="Rank_new1">10</td>
+<td class="gt_row gt_right" headers="Rank_new1">8</td>
 <td class="gt_row gt_right" headers="Rank_old1">11</td>
 <td class="gt_row gt_left" headers="Word pair">population model</td>
 <td class="gt_row gt_right" headers="n_new2">8</td>
-<td class="gt_row gt_right" headers="Rank_new2">10</td>
+<td class="gt_row gt_right" headers="Rank_new2">8</td>
 <td class="gt_row gt_right" headers="Rank_old2">3</td>
 </tr>
 <tr class="odd">
@@ -6827,37 +6913,37 @@ Rank
 <td class="gt_row gt_left" headers="Word pair">cultural transmission</td>
 <td class="gt_row gt_right" headers="n_new2">7</td>
 <td class="gt_row gt_right" headers="Rank_new2">11</td>
-<td class="gt_row gt_right" headers="Rank_old2">250</td>
+<td class="gt_row gt_right" headers="Rank_old2">229</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="word">distribution</td>
 <td class="gt_row gt_right" headers="n_new1">29</td>
 <td class="gt_row gt_right" headers="Rank_new1">12</td>
-<td class="gt_row gt_right" headers="Rank_old1">13</td>
+<td class="gt_row gt_right" headers="Rank_old1">12</td>
 <td class="gt_row gt_left" headers="Word pair">evolutionary dynamic</td>
 <td class="gt_row gt_right" headers="n_new2">7</td>
-<td class="gt_row gt_right" headers="Rank_new2">12</td>
-<td class="gt_row gt_right" headers="Rank_old2">52</td>
+<td class="gt_row gt_right" headers="Rank_new2">11</td>
+<td class="gt_row gt_right" headers="Rank_old2">51</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="word">evolutionary</td>
 <td class="gt_row gt_right" headers="n_new1">29</td>
-<td class="gt_row gt_right" headers="Rank_new1">13</td>
+<td class="gt_row gt_right" headers="Rank_new1">12</td>
 <td class="gt_row gt_right" headers="Rank_old1">25</td>
 <td class="gt_row gt_left" headers="Word pair">frequency dependent</td>
 <td class="gt_row gt_right" headers="n_new2">7</td>
-<td class="gt_row gt_right" headers="Rank_new2">13</td>
-<td class="gt_row gt_right" headers="Rank_old2">17</td>
+<td class="gt_row gt_right" headers="Rank_new2">11</td>
+<td class="gt_row gt_right" headers="Rank_old2">16</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="word">size</td>
 <td class="gt_row gt_right" headers="n_new1">29</td>
-<td class="gt_row gt_right" headers="Rank_new1">14</td>
+<td class="gt_row gt_right" headers="Rank_new1">12</td>
 <td class="gt_row gt_right" headers="Rank_old1">19</td>
 <td class="gt_row gt_left" headers="Word pair">mutation rate</td>
 <td class="gt_row gt_right" headers="n_new2">7</td>
-<td class="gt_row gt_right" headers="Rank_new2">14</td>
-<td class="gt_row gt_right" headers="Rank_old2">42</td>
+<td class="gt_row gt_right" headers="Rank_new2">11</td>
+<td class="gt_row gt_right" headers="Rank_old2">38</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="word">mutation</td>
@@ -6873,21 +6959,21 @@ Rank
 <td class="gt_row gt_left" headers="word">rate</td>
 <td class="gt_row gt_right" headers="n_new1">27</td>
 <td class="gt_row gt_right" headers="Rank_new1">16</td>
-<td class="gt_row gt_right" headers="Rank_old1">17</td>
+<td class="gt_row gt_right" headers="Rank_old1">16</td>
 <td class="gt_row gt_left" headers="Word pair">fisher diffusion</td>
 <td class="gt_row gt_right" headers="n_new2">6</td>
-<td class="gt_row gt_right" headers="Rank_new2">16</td>
+<td class="gt_row gt_right" headers="Rank_new2">15</td>
 <td class="gt_row gt_right" headers="Rank_old2">-</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="word">spatial</td>
 <td class="gt_row gt_right" headers="n_new1">26</td>
 <td class="gt_row gt_right" headers="Rank_new1">17</td>
-<td class="gt_row gt_right" headers="Rank_old1">34</td>
+<td class="gt_row gt_right" headers="Rank_old1">33</td>
 <td class="gt_row gt_left" headers="Word pair">fixation probability</td>
 <td class="gt_row gt_right" headers="n_new2">6</td>
-<td class="gt_row gt_right" headers="Rank_new2">17</td>
-<td class="gt_row gt_right" headers="Rank_old2">39</td>
+<td class="gt_row gt_right" headers="Rank_new2">15</td>
+<td class="gt_row gt_right" headers="Rank_old2">38</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="word">environment</td>
@@ -6896,27 +6982,27 @@ Rank
 <td class="gt_row gt_right" headers="Rank_old1">8</td>
 <td class="gt_row gt_left" headers="Word pair">linkage disequilibrium</td>
 <td class="gt_row gt_right" headers="n_new2">6</td>
-<td class="gt_row gt_right" headers="Rank_new2">18</td>
+<td class="gt_row gt_right" headers="Rank_new2">15</td>
 <td class="gt_row gt_right" headers="Rank_old2">13</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="word">fitness</td>
 <td class="gt_row gt_right" headers="n_new1">24</td>
-<td class="gt_row gt_right" headers="Rank_new1">19</td>
-<td class="gt_row gt_right" headers="Rank_old1">121</td>
+<td class="gt_row gt_right" headers="Rank_new1">18</td>
+<td class="gt_row gt_right" headers="Rank_old1">119</td>
 <td class="gt_row gt_left" headers="Word pair">quantitative trait</td>
 <td class="gt_row gt_right" headers="n_new2">6</td>
-<td class="gt_row gt_right" headers="Rank_new2">19</td>
-<td class="gt_row gt_right" headers="Rank_old2">157</td>
+<td class="gt_row gt_right" headers="Rank_new2">15</td>
+<td class="gt_row gt_right" headers="Rank_old2">119</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="word">cultural</td>
 <td class="gt_row gt_right" headers="n_new1">23</td>
 <td class="gt_row gt_right" headers="Rank_new1">20</td>
-<td class="gt_row gt_right" headers="Rank_old1">138</td>
+<td class="gt_row gt_right" headers="Rank_old1">134</td>
 <td class="gt_row gt_left" headers="Word pair">sex ratio</td>
 <td class="gt_row gt_right" headers="n_new2">6</td>
-<td class="gt_row gt_right" headers="Rank_new2">20</td>
+<td class="gt_row gt_right" headers="Rank_new2">15</td>
 <td class="gt_row gt_right" headers="Rank_old2">6</td>
 </tr>
 </tbody>
@@ -6928,14 +7014,15 @@ Rank
 </section>
 <section id="two-tables" class="level2">
 <h2 class="anchored" data-anchor-id="two-tables">Two tables</h2>
+<p>Create printable table where I checked that <code>head(n = 20)</code> includes top 20 ranks.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>one_gram_spacy <span class="sc">|&gt;</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(one_gram_old_spacy <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Rank_old1 =</span> <span class="fu">row_number</span>()), </span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(one_gram_old_spacy <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Rank_old1 =</span> <span class="fu">rank</span>(<span class="sc">-</span>n, <span class="at">ties.method =</span> <span class="st">&quot;min&quot;</span>)), </span>
 <span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">join_by</span>(word), <span class="at">suffix =</span> <span class="fu">c</span>(<span class="st">&quot;_new1&quot;</span>, <span class="st">&quot;_old1&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rank_new1 =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(word, n_new1, Rank_new1, Rank_old1) <span class="sc">|&gt;</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rank_new1 =</span> <span class="fu">rank</span>(<span class="sc">-</span>n_new1, <span class="at">ties.method =</span> <span class="st">&quot;min&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(word, n_new1, Rank_new1, Rank_old1) <span class="sc">|&gt;</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
 <span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
 <span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sub_missing</span>(<span class="at">columns =</span> <span class="fu">c</span>(Rank_old1), <span class="at">missing_text =</span> <span class="st">&quot;-&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">word =</span> <span class="st">&quot;Word&quot;</span>,</span>
@@ -6944,20 +7031,20 @@ Rank
 <span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Rank&quot;</span>, <span class="at">columns =</span> <span class="fu">c</span>(Rank_new1, Rank_old1), <span class="at">id =</span> <span class="st">&quot;one_rank_span&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Single words&quot;</span>, <span class="at">spanners =</span> <span class="fu">c</span>(<span class="st">&quot;one_pubs_span&quot;</span>, <span class="st">&quot;one_rank_span&quot;</span>)) <span class="co">#|&gt; as_latex() |&gt; as.character() |&gt; cat()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="dmjmrmbtlp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dmjmrmbtlp table {
+<div id="jxwusbrpoq" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#jxwusbrpoq table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#dmjmrmbtlp thead, #dmjmrmbtlp tbody, #dmjmrmbtlp tfoot, #dmjmrmbtlp tr, #dmjmrmbtlp td, #dmjmrmbtlp th {
+#jxwusbrpoq thead, #jxwusbrpoq tbody, #jxwusbrpoq tfoot, #jxwusbrpoq tr, #jxwusbrpoq td, #jxwusbrpoq th {
 border-style: none;
 }
-#dmjmrmbtlp p {
+#jxwusbrpoq p {
 margin: 0;
 padding: 0;
 }
-#dmjmrmbtlp .gt_table {
+#jxwusbrpoq .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -6982,11 +7069,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#dmjmrmbtlp .gt_caption {
+#jxwusbrpoq .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#dmjmrmbtlp .gt_title {
+#jxwusbrpoq .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -6997,7 +7084,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#dmjmrmbtlp .gt_subtitle {
+#jxwusbrpoq .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -7008,7 +7095,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#dmjmrmbtlp .gt_heading {
+#jxwusbrpoq .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -7019,12 +7106,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#dmjmrmbtlp .gt_bottom_border {
+#jxwusbrpoq .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#dmjmrmbtlp .gt_col_headings {
+#jxwusbrpoq .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -7038,7 +7125,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#dmjmrmbtlp .gt_col_heading {
+#jxwusbrpoq .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -7057,7 +7144,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#dmjmrmbtlp .gt_column_spanner_outer {
+#jxwusbrpoq .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -7068,13 +7155,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#dmjmrmbtlp .gt_column_spanner_outer:first-child {
+#jxwusbrpoq .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#dmjmrmbtlp .gt_column_spanner_outer:last-child {
+#jxwusbrpoq .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#dmjmrmbtlp .gt_column_spanner {
+#jxwusbrpoq .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -7085,10 +7172,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#dmjmrmbtlp .gt_spanner_row {
+#jxwusbrpoq .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#dmjmrmbtlp .gt_group_heading {
+#jxwusbrpoq .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -7113,7 +7200,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#dmjmrmbtlp .gt_empty_group_heading {
+#jxwusbrpoq .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -7127,13 +7214,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#dmjmrmbtlp .gt_from_md > :first-child {
+#jxwusbrpoq .gt_from_md > :first-child {
 margin-top: 0;
 }
-#dmjmrmbtlp .gt_from_md > :last-child {
+#jxwusbrpoq .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#dmjmrmbtlp .gt_row {
+#jxwusbrpoq .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -7151,7 +7238,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#dmjmrmbtlp .gt_stub {
+#jxwusbrpoq .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -7163,7 +7250,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#dmjmrmbtlp .gt_stub_row_group {
+#jxwusbrpoq .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -7176,13 +7263,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#dmjmrmbtlp .gt_row_group_first td {
+#jxwusbrpoq .gt_row_group_first td {
 border-top-width: 2px;
 }
-#dmjmrmbtlp .gt_row_group_first th {
+#jxwusbrpoq .gt_row_group_first th {
 border-top-width: 2px;
 }
-#dmjmrmbtlp .gt_summary_row {
+#jxwusbrpoq .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -7191,14 +7278,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#dmjmrmbtlp .gt_first_summary_row {
+#jxwusbrpoq .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#dmjmrmbtlp .gt_first_summary_row.thick {
+#jxwusbrpoq .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#dmjmrmbtlp .gt_last_summary_row {
+#jxwusbrpoq .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -7207,7 +7294,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#dmjmrmbtlp .gt_grand_summary_row {
+#jxwusbrpoq .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -7216,7 +7303,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#dmjmrmbtlp .gt_first_grand_summary_row {
+#jxwusbrpoq .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -7225,7 +7312,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#dmjmrmbtlp .gt_last_grand_summary_row_top {
+#jxwusbrpoq .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -7234,10 +7321,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#dmjmrmbtlp .gt_striped {
+#jxwusbrpoq .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#dmjmrmbtlp .gt_table_body {
+#jxwusbrpoq .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -7245,7 +7332,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#dmjmrmbtlp .gt_footnotes {
+#jxwusbrpoq .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -7258,7 +7345,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#dmjmrmbtlp .gt_footnote {
+#jxwusbrpoq .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -7266,7 +7353,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#dmjmrmbtlp .gt_sourcenotes {
+#jxwusbrpoq .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -7279,64 +7366,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#dmjmrmbtlp .gt_sourcenote {
+#jxwusbrpoq .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#dmjmrmbtlp .gt_left {
+#jxwusbrpoq .gt_left {
 text-align: left;
 }
-#dmjmrmbtlp .gt_center {
+#jxwusbrpoq .gt_center {
 text-align: center;
 }
-#dmjmrmbtlp .gt_right {
+#jxwusbrpoq .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#dmjmrmbtlp .gt_font_normal {
+#jxwusbrpoq .gt_font_normal {
 font-weight: normal;
 }
-#dmjmrmbtlp .gt_font_bold {
+#jxwusbrpoq .gt_font_bold {
 font-weight: bold;
 }
-#dmjmrmbtlp .gt_font_italic {
+#jxwusbrpoq .gt_font_italic {
 font-style: italic;
 }
-#dmjmrmbtlp .gt_super {
+#jxwusbrpoq .gt_super {
 font-size: 65%;
 }
-#dmjmrmbtlp .gt_footnote_marks {
+#jxwusbrpoq .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#dmjmrmbtlp .gt_asterisk {
+#jxwusbrpoq .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#dmjmrmbtlp .gt_indent_1 {
+#jxwusbrpoq .gt_indent_1 {
 text-indent: 5px;
 }
-#dmjmrmbtlp .gt_indent_2 {
+#jxwusbrpoq .gt_indent_2 {
 text-indent: 10px;
 }
-#dmjmrmbtlp .gt_indent_3 {
+#jxwusbrpoq .gt_indent_3 {
 text-indent: 15px;
 }
-#dmjmrmbtlp .gt_indent_4 {
+#jxwusbrpoq .gt_indent_4 {
 text-indent: 20px;
 }
-#dmjmrmbtlp .gt_indent_5 {
+#jxwusbrpoq .gt_indent_5 {
 text-indent: 25px;
 }
-#dmjmrmbtlp .katex-display {
+#jxwusbrpoq .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#dmjmrmbtlp div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#jxwusbrpoq div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -7422,13 +7509,13 @@ Rank
 <tr class="odd">
 <td class="gt_row gt_left" headers="word">frequency</td>
 <td class="gt_row gt_right" headers="n_new1">31</td>
-<td class="gt_row gt_right" headers="Rank_new1">9</td>
+<td class="gt_row gt_right" headers="Rank_new1">8</td>
 <td class="gt_row gt_right" headers="Rank_old1">27</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="word">structure</td>
 <td class="gt_row gt_right" headers="n_new1">31</td>
-<td class="gt_row gt_right" headers="Rank_new1">10</td>
+<td class="gt_row gt_right" headers="Rank_new1">8</td>
 <td class="gt_row gt_right" headers="Rank_old1">11</td>
 </tr>
 <tr class="odd">
@@ -7441,18 +7528,18 @@ Rank
 <td class="gt_row gt_left" headers="word">distribution</td>
 <td class="gt_row gt_right" headers="n_new1">29</td>
 <td class="gt_row gt_right" headers="Rank_new1">12</td>
-<td class="gt_row gt_right" headers="Rank_old1">13</td>
+<td class="gt_row gt_right" headers="Rank_old1">12</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="word">evolutionary</td>
 <td class="gt_row gt_right" headers="n_new1">29</td>
-<td class="gt_row gt_right" headers="Rank_new1">13</td>
+<td class="gt_row gt_right" headers="Rank_new1">12</td>
 <td class="gt_row gt_right" headers="Rank_old1">25</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="word">size</td>
 <td class="gt_row gt_right" headers="n_new1">29</td>
-<td class="gt_row gt_right" headers="Rank_new1">14</td>
+<td class="gt_row gt_right" headers="Rank_new1">12</td>
 <td class="gt_row gt_right" headers="Rank_old1">19</td>
 </tr>
 <tr class="odd">
@@ -7465,13 +7552,13 @@ Rank
 <td class="gt_row gt_left" headers="word">rate</td>
 <td class="gt_row gt_right" headers="n_new1">27</td>
 <td class="gt_row gt_right" headers="Rank_new1">16</td>
-<td class="gt_row gt_right" headers="Rank_old1">17</td>
+<td class="gt_row gt_right" headers="Rank_old1">16</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="word">spatial</td>
 <td class="gt_row gt_right" headers="n_new1">26</td>
 <td class="gt_row gt_right" headers="Rank_new1">17</td>
-<td class="gt_row gt_right" headers="Rank_old1">34</td>
+<td class="gt_row gt_right" headers="Rank_old1">33</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="word">environment</td>
@@ -7482,28 +7569,30 @@ Rank
 <tr class="odd">
 <td class="gt_row gt_left" headers="word">fitness</td>
 <td class="gt_row gt_right" headers="n_new1">24</td>
-<td class="gt_row gt_right" headers="Rank_new1">19</td>
-<td class="gt_row gt_right" headers="Rank_old1">121</td>
+<td class="gt_row gt_right" headers="Rank_new1">18</td>
+<td class="gt_row gt_right" headers="Rank_old1">119</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="word">cultural</td>
 <td class="gt_row gt_right" headers="n_new1">23</td>
 <td class="gt_row gt_right" headers="Rank_new1">20</td>
-<td class="gt_row gt_right" headers="Rank_old1">138</td>
+<td class="gt_row gt_right" headers="Rank_old1">134</td>
 </tr>
 </tbody>
 </table>
 
 </div>
 </div>
+</div>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>two_gram_spacy <span class="sc">|&gt;</span></span>
 <span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unite</span>(<span class="st">&quot;Word pair&quot;</span>, word1<span class="sc">:</span>word2, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(two_gram_old_spacy <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Rank_old2 =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span> <span class="fu">unite</span>(<span class="st">&quot;Word pair&quot;</span>, word1<span class="sc">:</span>word2, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>), </span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(two_gram_old_spacy <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Rank_old2 =</span> <span class="fu">rank</span>(<span class="sc">-</span>n, <span class="at">ties.method =</span> <span class="st">&quot;min&quot;</span>)) <span class="sc">|&gt;</span> <span class="fu">unite</span>(<span class="st">&quot;Word pair&quot;</span>, word1<span class="sc">:</span>word2, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>), </span>
 <span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">by =</span> <span class="fu">join_by</span>(<span class="st">&quot;Word pair&quot;</span>), <span class="at">suffix =</span> <span class="fu">c</span>(<span class="st">&quot;_new2&quot;</span>, <span class="st">&quot;_old2&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
-<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
-<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rank_new2 =</span> <span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">&quot;Word pair&quot;</span>, n_new2, Rank_new2, Rank_old2) <span class="sc">|&gt;</span></span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">|&gt;</span></span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Rank_new2 =</span> <span class="fu">rank</span>(<span class="sc">-</span>n_new2, <span class="at">ties.method =</span> <span class="st">&quot;min&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">&quot;Word pair&quot;</span>, n_new2, Rank_new2, Rank_old2) <span class="sc">|&gt;</span></span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
 <span id="cb58-9"><a href="#cb58-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
 <span id="cb58-10"><a href="#cb58-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sub_missing</span>(<span class="at">columns =</span> <span class="fu">c</span>(Rank_old2), <span class="at">missing_text =</span> <span class="st">&quot;-&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb58-11"><a href="#cb58-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">n_new2 =</span> <span class="st">&quot;2013—2024&quot;</span>, <span class="at">Rank_new2 =</span> <span class="st">&quot;2013—2024&quot;</span>, <span class="at">Rank_old2 =</span> <span class="st">&quot;1970—2012&quot;</span>) <span class="sc">|&gt;</span></span>
@@ -7511,20 +7600,20 @@ Rank
 <span id="cb58-13"><a href="#cb58-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Rank&quot;</span>, <span class="at">columns =</span> <span class="fu">c</span>(Rank_new2, Rank_old2), <span class="at">id =</span> <span class="st">&quot;two_rank_span&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb58-14"><a href="#cb58-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_spanner</span>(<span class="at">label =</span> <span class="st">&quot;Pair of words&quot;</span>, <span class="at">spanners =</span> <span class="fu">c</span>(<span class="st">&quot;two_pubs_span&quot;</span>, <span class="st">&quot;two_rank_span&quot;</span>)) <span class="co">#|&gt; as_latex() |&gt; as.character() |&gt; cat()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="plcwzzyzin" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#plcwzzyzin table {
+<div id="nmnuafjulw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#nmnuafjulw table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#plcwzzyzin thead, #plcwzzyzin tbody, #plcwzzyzin tfoot, #plcwzzyzin tr, #plcwzzyzin td, #plcwzzyzin th {
+#nmnuafjulw thead, #nmnuafjulw tbody, #nmnuafjulw tfoot, #nmnuafjulw tr, #nmnuafjulw td, #nmnuafjulw th {
 border-style: none;
 }
-#plcwzzyzin p {
+#nmnuafjulw p {
 margin: 0;
 padding: 0;
 }
-#plcwzzyzin .gt_table {
+#nmnuafjulw .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -7549,11 +7638,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#plcwzzyzin .gt_caption {
+#nmnuafjulw .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#plcwzzyzin .gt_title {
+#nmnuafjulw .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -7564,7 +7653,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#plcwzzyzin .gt_subtitle {
+#nmnuafjulw .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -7575,7 +7664,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#plcwzzyzin .gt_heading {
+#nmnuafjulw .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -7586,12 +7675,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#plcwzzyzin .gt_bottom_border {
+#nmnuafjulw .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#plcwzzyzin .gt_col_headings {
+#nmnuafjulw .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -7605,7 +7694,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#plcwzzyzin .gt_col_heading {
+#nmnuafjulw .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -7624,7 +7713,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#plcwzzyzin .gt_column_spanner_outer {
+#nmnuafjulw .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -7635,13 +7724,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#plcwzzyzin .gt_column_spanner_outer:first-child {
+#nmnuafjulw .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#plcwzzyzin .gt_column_spanner_outer:last-child {
+#nmnuafjulw .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#plcwzzyzin .gt_column_spanner {
+#nmnuafjulw .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -7652,10 +7741,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#plcwzzyzin .gt_spanner_row {
+#nmnuafjulw .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#plcwzzyzin .gt_group_heading {
+#nmnuafjulw .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -7680,7 +7769,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#plcwzzyzin .gt_empty_group_heading {
+#nmnuafjulw .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -7694,13 +7783,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#plcwzzyzin .gt_from_md > :first-child {
+#nmnuafjulw .gt_from_md > :first-child {
 margin-top: 0;
 }
-#plcwzzyzin .gt_from_md > :last-child {
+#nmnuafjulw .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#plcwzzyzin .gt_row {
+#nmnuafjulw .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -7718,7 +7807,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#plcwzzyzin .gt_stub {
+#nmnuafjulw .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -7730,7 +7819,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#plcwzzyzin .gt_stub_row_group {
+#nmnuafjulw .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -7743,13 +7832,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#plcwzzyzin .gt_row_group_first td {
+#nmnuafjulw .gt_row_group_first td {
 border-top-width: 2px;
 }
-#plcwzzyzin .gt_row_group_first th {
+#nmnuafjulw .gt_row_group_first th {
 border-top-width: 2px;
 }
-#plcwzzyzin .gt_summary_row {
+#nmnuafjulw .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -7758,14 +7847,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#plcwzzyzin .gt_first_summary_row {
+#nmnuafjulw .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#plcwzzyzin .gt_first_summary_row.thick {
+#nmnuafjulw .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#plcwzzyzin .gt_last_summary_row {
+#nmnuafjulw .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -7774,7 +7863,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#plcwzzyzin .gt_grand_summary_row {
+#nmnuafjulw .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -7783,7 +7872,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#plcwzzyzin .gt_first_grand_summary_row {
+#nmnuafjulw .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -7792,7 +7881,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#plcwzzyzin .gt_last_grand_summary_row_top {
+#nmnuafjulw .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -7801,10 +7890,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#plcwzzyzin .gt_striped {
+#nmnuafjulw .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#plcwzzyzin .gt_table_body {
+#nmnuafjulw .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -7812,7 +7901,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#plcwzzyzin .gt_footnotes {
+#nmnuafjulw .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -7825,7 +7914,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#plcwzzyzin .gt_footnote {
+#nmnuafjulw .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -7833,7 +7922,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#plcwzzyzin .gt_sourcenotes {
+#nmnuafjulw .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -7846,64 +7935,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#plcwzzyzin .gt_sourcenote {
+#nmnuafjulw .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#plcwzzyzin .gt_left {
+#nmnuafjulw .gt_left {
 text-align: left;
 }
-#plcwzzyzin .gt_center {
+#nmnuafjulw .gt_center {
 text-align: center;
 }
-#plcwzzyzin .gt_right {
+#nmnuafjulw .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#plcwzzyzin .gt_font_normal {
+#nmnuafjulw .gt_font_normal {
 font-weight: normal;
 }
-#plcwzzyzin .gt_font_bold {
+#nmnuafjulw .gt_font_bold {
 font-weight: bold;
 }
-#plcwzzyzin .gt_font_italic {
+#nmnuafjulw .gt_font_italic {
 font-style: italic;
 }
-#plcwzzyzin .gt_super {
+#nmnuafjulw .gt_super {
 font-size: 65%;
 }
-#plcwzzyzin .gt_footnote_marks {
+#nmnuafjulw .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#plcwzzyzin .gt_asterisk {
+#nmnuafjulw .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#plcwzzyzin .gt_indent_1 {
+#nmnuafjulw .gt_indent_1 {
 text-indent: 5px;
 }
-#plcwzzyzin .gt_indent_2 {
+#nmnuafjulw .gt_indent_2 {
 text-indent: 10px;
 }
-#plcwzzyzin .gt_indent_3 {
+#nmnuafjulw .gt_indent_3 {
 text-indent: 15px;
 }
-#plcwzzyzin .gt_indent_4 {
+#nmnuafjulw .gt_indent_4 {
 text-indent: 20px;
 }
-#plcwzzyzin .gt_indent_5 {
+#nmnuafjulw .gt_indent_5 {
 text-indent: 25px;
 }
-#plcwzzyzin .katex-display {
+#nmnuafjulw .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#plcwzzyzin div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#nmnuafjulw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -7948,7 +8037,7 @@ Rank
 <td class="gt_row gt_left" headers="Word pair">wright fisher</td>
 <td class="gt_row gt_right" headers="n_new2">15</td>
 <td class="gt_row gt_right" headers="Rank_new2">2</td>
-<td class="gt_row gt_right" headers="Rank_old2">58</td>
+<td class="gt_row gt_right" headers="Rank_old2">51</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Word pair">population genetic</td>
@@ -7966,13 +8055,13 @@ Rank
 <td class="gt_row gt_left" headers="Word pair">frequency spectrum</td>
 <td class="gt_row gt_right" headers="n_new2">11</td>
 <td class="gt_row gt_right" headers="Rank_new2">5</td>
-<td class="gt_row gt_right" headers="Rank_old2">78</td>
+<td class="gt_row gt_right" headers="Rank_old2">72</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Word pair">site frequency</td>
 <td class="gt_row gt_right" headers="n_new2">11</td>
-<td class="gt_row gt_right" headers="Rank_new2">6</td>
-<td class="gt_row gt_right" headers="Rank_old2">770</td>
+<td class="gt_row gt_right" headers="Rank_new2">5</td>
+<td class="gt_row gt_right" headers="Rank_old2">401</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Word pair">population size</td>
@@ -7989,38 +8078,38 @@ Rank
 <tr class="odd">
 <td class="gt_row gt_left" headers="Word pair">allele frequency</td>
 <td class="gt_row gt_right" headers="n_new2">8</td>
-<td class="gt_row gt_right" headers="Rank_new2">9</td>
+<td class="gt_row gt_right" headers="Rank_new2">8</td>
 <td class="gt_row gt_right" headers="Rank_old2">21</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Word pair">population model</td>
 <td class="gt_row gt_right" headers="n_new2">8</td>
-<td class="gt_row gt_right" headers="Rank_new2">10</td>
+<td class="gt_row gt_right" headers="Rank_new2">8</td>
 <td class="gt_row gt_right" headers="Rank_old2">3</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Word pair">cultural transmission</td>
 <td class="gt_row gt_right" headers="n_new2">7</td>
 <td class="gt_row gt_right" headers="Rank_new2">11</td>
-<td class="gt_row gt_right" headers="Rank_old2">250</td>
+<td class="gt_row gt_right" headers="Rank_old2">229</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Word pair">evolutionary dynamic</td>
 <td class="gt_row gt_right" headers="n_new2">7</td>
-<td class="gt_row gt_right" headers="Rank_new2">12</td>
-<td class="gt_row gt_right" headers="Rank_old2">52</td>
+<td class="gt_row gt_right" headers="Rank_new2">11</td>
+<td class="gt_row gt_right" headers="Rank_old2">51</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Word pair">frequency dependent</td>
 <td class="gt_row gt_right" headers="n_new2">7</td>
-<td class="gt_row gt_right" headers="Rank_new2">13</td>
-<td class="gt_row gt_right" headers="Rank_old2">17</td>
+<td class="gt_row gt_right" headers="Rank_new2">11</td>
+<td class="gt_row gt_right" headers="Rank_old2">16</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Word pair">mutation rate</td>
 <td class="gt_row gt_right" headers="n_new2">7</td>
-<td class="gt_row gt_right" headers="Rank_new2">14</td>
-<td class="gt_row gt_right" headers="Rank_old2">42</td>
+<td class="gt_row gt_right" headers="Rank_new2">11</td>
+<td class="gt_row gt_right" headers="Rank_old2">38</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Word pair">dependent selection</td>
@@ -8031,31 +8120,31 @@ Rank
 <tr class="even">
 <td class="gt_row gt_left" headers="Word pair">fisher diffusion</td>
 <td class="gt_row gt_right" headers="n_new2">6</td>
-<td class="gt_row gt_right" headers="Rank_new2">16</td>
+<td class="gt_row gt_right" headers="Rank_new2">15</td>
 <td class="gt_row gt_right" headers="Rank_old2">-</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Word pair">fixation probability</td>
 <td class="gt_row gt_right" headers="n_new2">6</td>
-<td class="gt_row gt_right" headers="Rank_new2">17</td>
-<td class="gt_row gt_right" headers="Rank_old2">39</td>
+<td class="gt_row gt_right" headers="Rank_new2">15</td>
+<td class="gt_row gt_right" headers="Rank_old2">38</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Word pair">linkage disequilibrium</td>
 <td class="gt_row gt_right" headers="n_new2">6</td>
-<td class="gt_row gt_right" headers="Rank_new2">18</td>
+<td class="gt_row gt_right" headers="Rank_new2">15</td>
 <td class="gt_row gt_right" headers="Rank_old2">13</td>
 </tr>
 <tr class="odd">
 <td class="gt_row gt_left" headers="Word pair">quantitative trait</td>
 <td class="gt_row gt_right" headers="n_new2">6</td>
-<td class="gt_row gt_right" headers="Rank_new2">19</td>
-<td class="gt_row gt_right" headers="Rank_old2">157</td>
+<td class="gt_row gt_right" headers="Rank_new2">15</td>
+<td class="gt_row gt_right" headers="Rank_old2">119</td>
 </tr>
 <tr class="even">
 <td class="gt_row gt_left" headers="Word pair">sex ratio</td>
 <td class="gt_row gt_right" headers="n_new2">6</td>
-<td class="gt_row gt_right" headers="Rank_new2">20</td>
+<td class="gt_row gt_right" headers="Rank_new2">15</td>
 <td class="gt_row gt_right" headers="Rank_old2">6</td>
 </tr>
 </tbody>
